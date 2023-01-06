@@ -62,7 +62,6 @@ if __name__ == "__main__":
         default=16210,
     )
     parser.add_argument(
-        "--username",
         type=str,
         help="name of the user",
         default="THE_BIG_FARMER",
@@ -70,4 +69,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    client = PlayerGameClient(args.address, args.port).run()
+    client = PlayerGameClient(args.address, args.port, args.username).run()
