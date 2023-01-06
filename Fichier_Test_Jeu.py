@@ -62,11 +62,10 @@ if __name__ == "__main__":
         default=16210,
     )
     parser.add_argument(
-        "-u",
         "--username",
         type=str,
         help="name of the user",
-        default="unknown",
+        default="THE_BIG_FARMER",
         required=True,
     )
     args = parser.parse_args()
