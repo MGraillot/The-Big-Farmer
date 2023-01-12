@@ -15,6 +15,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Run and test pytest
+      - name: Run test_farmer.py
         run: |
           test_farmer.py
+         
