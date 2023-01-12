@@ -29,7 +29,7 @@ pytest
 #### a. Travailler sur l'environnement virtuel :
 ATTENTION ! Veillez à bien activer l'envrionnement virtuel (venv)
 
-    * Windows : `venv\Scripts\activate.bat`
+    * Windows : `venv\Scripts\Activate.ps1`
     * Unix/MacOS : `source venv/bin/activate`
 
 #### b. Installation de pytest + plugin coverage :
