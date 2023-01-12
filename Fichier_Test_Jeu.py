@@ -12,6 +12,8 @@ class PlayerGameClient(Client):
         self._commands: list[str] = []
 
     def run(self: "PlayerGameClient") -> NoReturn:
+        date_vente = -100000
+
         while True:
             game_data = self.read_json()
             for farm in game_data["farms"]:
@@ -23,15 +25,22 @@ class PlayerGameClient(Client):
             print(my_farm)
 
             if game_data["day"] == 0:
-                self.add_command("0 EMPRUNTER 100000")
-                self.add_command("0 ACHETER_CHAMP")
-                self.add_command("0 ACHETER_CHAMP")
-                self.add_command("0 ACHETER_CHAMP")
-                self.add_command("0 ACHETER_TRACTEUR")
-                self.add_command("0 ACHETER_TRACTEUR")
-                self.add_command("0 EMPLOYER")
-                self.add_command("0 EMPLOYER")
-                self.add_command("1 SEMER PATATE 3")
+                #self.add_command("0 EMPRUNTER 100000")
+                self.add_command("1 ACHETER_CHAMP")
+                #self.add_command("0 ACHETER_TRACTEUR")
+                self.add_command("1 EMPLOYER")
+                self.add_command("1 SEMER TOMATE 1")
+                #self.add_command("3 ARROSER 1")
+            
+
+            if my_farm["fields"][0]["needed_water"] != 0:
+                self.add_command("1 ARROSER 1")
+            elif my_farm["fields"][0]["content"] != "NONE" and game_data["day"] > date_vente + 2 :
+                 self.add_command("0 VENDRE 1")
+                 date_vente = game_data["day"]
+
+            if game_data["day"] == date_vente + 2:
+                self.add_command("1 SEMER TOMATE 1")
 
             self.send_commands()
 
