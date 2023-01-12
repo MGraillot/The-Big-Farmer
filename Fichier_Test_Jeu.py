@@ -8,7 +8,7 @@ class PlayerGameClient(Client):
     def __init__(
         self: "PlayerGameClient", server_addr: str, port: int, username: str
     ) -> None:
-        super().__init__(server_addr, port, username, spectator=False)
+        super().__init__(server_addr, port, "THE_BIG_FARMER", spectator=False)
         self._commands: list[str] = []
 
     def run(self: "PlayerGameClient") -> NoReturn:
@@ -61,14 +61,7 @@ if __name__ == "__main__":
         help="location where server listens",
         default=16210,
     )
-    parser.add_argument(
-        "-u",
-        "--username",
-        type=str,
-        help="name of the user",
-        default="unknow",
-        required=True,
-    )
+
     args = parser.parse_args()
 
-    client = PlayerGameClient(args.address, args.port, "THE_BIG_FARMER").run()
+    client = PlayerGameClient(args.address, args.port).run()
