@@ -17,4 +17,8 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Run and test
         run: |
-          pytest         
+          pytest
+      - name: Repository Test
+        env:
+        pytest_github_report: true
+          run: pytest         
