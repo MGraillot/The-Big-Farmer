@@ -10,39 +10,55 @@ class PlayerGameClient(Client):
     ) -> None:
         super().__init__(server_addr, port, "THE_BIG_FARMER", spectator=False)
         self._commands: list[str] = []
-
+        self.date_vente: list[int] = [-100, -100, -100, -100, -100]
     def run(self: "PlayerGameClient") -> NoReturn:
-        date_vente = -100000
 
         while True:
-            game_data = self.read_json()
-            for farm in game_data["farms"]:
+            self.game_data = self.read_json()
+            for farm in self.game_data["farms"]:
                 if farm["name"] == self.username:
-                    my_farm = farm
+                    self.my_farm = farm
                     break
             else:
                 raise ValueError(f"My farm is not found ({self.username})")
-            print(my_farm)
+            print(self.my_farm)
 
-            if game_data["day"] == 0:
+            if self.game_data["day"] == 0:
                 #self.add_command("0 EMPRUNTER 100000")
                 self.add_command("1 ACHETER_CHAMP")
+                self.add_command("2 ACHETER_CHAMP")
                 #self.add_command("0 ACHETER_TRACTEUR")
                 self.add_command("1 EMPLOYER")
+                self.add_command("2 EMPLOYER")
                 self.add_command("1 SEMER TOMATE 1")
-                #self.add_command("3 ARROSER 1")
+                self.add_command("2 SEMER POIREAU 2")
             
-
-            if my_farm["fields"][0]["needed_water"] != 0:
-                self.add_command("1 ARROSER 1")
-            elif my_farm["fields"][0]["content"] != "NONE" and game_data["day"] > date_vente + 2 :
-                 self.add_command("0 VENDRE 1")
-                 date_vente = game_data["day"]
-
-            if game_data["day"] == date_vente + 2:
-                self.add_command("1 SEMER TOMATE 1")
-
+            self.arroser(1, 1)
+            self.arroser(2, 2)
+            self.vendre(1)
+            self.vendre(2)
+            self.semer(1, 1, "OIGNON")
+            self.semer(2, 2, "COURGETTE")
             self.send_commands()
+
+    def arroser(self: "PlayerGameClient", ouvrier, champs):
+        if self.my_farm["fields"][champs-1]["needed_water"] != 0:
+            self.add_command(f"{ouvrier} ARROSER {champs}")
+
+    def vendre(self: "PlayerGameClient", champs):
+        champs_en_cours_de_vente = False
+        for index in range(5):
+            if self.game_data["day"] <= self.date_vente[index] + 2:
+                champs_en_cours_de_vente = True 
+                break
+
+        if self.my_farm["fields"][champs-1]["content"] != "NONE" and not champs_en_cours_de_vente and self.my_farm["fields"][champs-1]["needed_water"] == 0 :
+            self.add_command(f"0 VENDRE {champs}")
+            self.date_vente[champs-1] = self.game_data["day"]
+
+    def semer(self: "PlayerGameClient", ouvrier, champs, legume):
+        if self.game_data["day"] == self.date_vente[champs-1] + 2:
+            self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
@@ -70,6 +86,7 @@ if __name__ == "__main__":
         help="location where server listens",
         default=16210,
     )
+
 
     args = parser.parse_args()
 
