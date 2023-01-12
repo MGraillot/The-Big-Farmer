@@ -19,6 +19,6 @@ jobs:
         run: |
           pytest
       - name: Repository Test
-        env:
-        pytest_github_report: true
-          run: pytest         
+          env:
+          pytest_github_report: true
+        run: pytest         
