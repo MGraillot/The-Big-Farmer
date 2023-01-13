@@ -43,19 +43,23 @@ class PlayerGameClient(Client):
                 self.add_command("5 SEMER COURGETTE 5")
             
             self.arroser(1, 1)
-            self.arroser(2, 2)
-            self.arroser(3, 3)
-            self.arroser(4, 4)
-            self.arroser(5, 5)
             self.vendre(1)
-            self.vendre(2)
-            self.vendre(3)
-            self.vendre(4)
-            self.vendre(5)
             self.semer(1, 1, "TOMATE")
+
+            self.arroser(2, 2)
+            self.vendre(2)
             self.semer(2, 2, "POIREAU")
+
+            self.arroser(3, 3)
+            self.vendre(3)
             self.semer(3, 3, "PATATE")
+
+            self.arroser(4, 4)
+            self.vendre(4)
             self.semer(4, 4, "OIGNON")
+            
+            self.arroser(5, 5)
+            self.vendre(5)
             self.semer(5, 5, "COURGETTE")
             self.send_commands()
 
