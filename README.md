@@ -82,10 +82,10 @@ Remplacer $port par le même numéro de serveur que précédement en respectant 
 python3 -m venv venv
 ```
 ### 1B - Création de l'espace virtuel UBUNTU
+```
 sudo apt install python3-venv
 python3 -m venv my-project-env
-
-(env) $ pip install requests
+```
 ### 2A - Activation de l'espace virtuel WINDOWS
 ```
 venv\Scripts\Activate.ps1
@@ -102,3 +102,5 @@ python -m chronobio.viewer -p $port
 Remplacer $port par le même numéro de serveur que précédement en respectant la condition > 1024
 
 /!\ Il faut garder les terminaux ouverts /!\
+
+# = PRE-COMMIT =
