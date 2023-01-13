@@ -102,3 +102,5 @@ python -m chronobio.viewer -p $port
 Remplacer $port par le même numéro de serveur que précédement en respectant la condition > 1024
 
 /!\ Il faut garder les terminaux ouverts /!\
+
+# = PRE-COMMIT =
