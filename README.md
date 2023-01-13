@@ -63,7 +63,7 @@ TOTAL 353 20 94%
 # = AIDE LANCEMENT DU JEU =
 
 ### - Connexion au serveur :
-Dans un premier terminal de commande entrer la ligne suivante 
+Dans un premier terminal de commande entrer la ligne suivante
 ```
 python3 -m chronobio.game.server -p $port
 ```
