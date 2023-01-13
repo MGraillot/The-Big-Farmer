@@ -27,11 +27,11 @@ class PlayerGameClient(Client):
 
             if self.game_data["day"] == 0:
                 self.add_command("0 EMPRUNTER 100000")
-                self.add_command("1 ACHETER_CHAMP")
-                self.add_command("2 ACHETER_CHAMP")
-                self.add_command("3 ACHETER_CHAMP")
-                self.add_command("4 ACHETER_CHAMP")
-                self.add_command("5 ACHETER_CHAMP")
+                self.add_command("0 ACHETER_CHAMP")
+                self.add_command("0 ACHETER_CHAMP")
+                self.add_command("0 ACHETER_CHAMP")
+                self.add_command("0 ACHETER_CHAMP")
+                self.add_command("0 ACHETER_CHAMP")
                 self.add_command("0 ACHETER_TRACTEUR")
                 self.add_command("0 ACHETER_TRACTEUR")
                 self.add_command("0 EMPLOYER")
@@ -47,21 +47,20 @@ class PlayerGameClient(Client):
                 self.add_command("3 SEMER PATATE 3")
                 self.add_command("4 SEMER OIGNON 4")
                 self.add_command("5 SEMER COURGETTE 5")
-            
+                self.add_command("8 CUISINER")
+
             self.arroser(1, 1)
-            self.semer(1, 1, "TOMATE")
-
             self.arroser(2, 2)
-            self.semer(2, 2, "POIREAU")
-
             self.arroser(3, 3)
-            self.semer(3, 3, "PATATE")
-
             self.arroser(4, 4)
-            self.semer(4, 4, "OIGNON")
-            
             self.arroser(5, 5)
-            self.semer(5, 5, "COURGETTE")
+
+            #self.semer_stock(1, 1, "TOMATE")
+            #self.semer_stock(2, 2, "POIREAU")
+            #self.semer_stock(3, 3, "PATATE")
+            #self.semer_stock(4, 4, "OIGNON")
+            #self.semer_stock(5, 5, "COURGETTE")
+
             self.detection_fin_stockage()
             self.stocker(6, 1)
             self.stocker(7, 2)
@@ -83,9 +82,13 @@ class PlayerGameClient(Client):
             self.add_command(f"0 VENDRE {champs}")
             self.date_vente[champs-1] = self.game_data["day"]
 
-    def semer(self: "PlayerGameClient", ouvrier, champs, legume):
+    def semer_vente(self: "PlayerGameClient", ouvrier, champs, legume):
         if self.game_data["day"] == self.date_vente[champs-1] + 2:
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+
+    def semer_stock(self: "PlayerGameClient", ouvrier, champs, legume):
+            if self.my_farm["fields"][champs-1]["content"] == "NONE":
+                self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "PlayerGameClient", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
@@ -113,10 +116,14 @@ class PlayerGameClient(Client):
                     self.ouvrier_stockage_par_champ[numero_champ] = -1
 
     def cuisiner(self: "PlayerGameClient", ouvrier):
-        for legume in "POTATO", "LEEK", "TOMATO", "ONION", "ZUCCHINI":
+        for employe in self.my_farm["employees"]:
+            if employe["id"] == ouvrier and employe["location"] != "SOUP_FACTORY":
+                return
+
+        for legume in ("POTATO", "LEEK", "TOMATO", "ONION", "ZUCCHINI"):
             if self.my_farm["soup_factory"]["stock"][legume] == 0:
                 return
-            self.add_command(f"{ouvrier} CUISINER")
+        self.add_command(f"{ouvrier} CUISINER")
 
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
