@@ -32,7 +32,6 @@ jobs:
         run: |
           pytest
 
-jobs2:
   build2:
 
     runs-on: ubuntu-latest
