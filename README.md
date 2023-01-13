@@ -76,7 +76,7 @@ python3 name_game_file.py -p $port -u THE_BIG_FARMER
 ```
 Remplacer $port par le même numéro de serveur que précédement en respectant la condition > 1024
 
-## A : Partie graphique :
+### : Partie graphique :
 ### 1A - Création de l'espace virtuel WINDOWS
 ```
 python3 -m venv venv
