@@ -47,12 +47,14 @@ class PlayerGameClient(Client):
                 self.add_command("0 EMPLOYER")
                 self.add_command("0 EMPLOYER")
                 self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
                 self.add_command("1 SEMER TOMATE 1")
                 self.add_command("2 SEMER POIREAU 2")
                 self.add_command("3 SEMER PATATE 3")
                 self.add_command("4 SEMER OIGNON 4")
                 self.add_command("5 SEMER COURGETTE 5")
                 self.add_command("8 CUISINER")
+                self.add_command("9 CUISINER")
 
             self.arroser(1, 1)
             self.arroser(2, 2)
@@ -71,6 +73,7 @@ class PlayerGameClient(Client):
             self.stocker(6, 1)
             self.stocker(7, 2)
             self.cuisiner(8)
+            self.cuisiner(9)
             self.send_commands()
 
             for champs in range(5):
