@@ -14,3 +14,7 @@ exclude = '''
   | dist
 )/
 '''
+
+[flake8]
+max-line-length = 88
+max-complexity = 10
