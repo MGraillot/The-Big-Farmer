@@ -11,6 +11,8 @@ class PlayerGameClient(Client):
         super().__init__(server_addr, port, "THE_BIG_FARMER", spectator=False)
         self._commands: list[str] = []
         self.date_vente: list[int] = [-100, -100, -100, -100, -100]
+        self.champs_en_cours_de_stockage: list[bool] = [False, False, False, False, False]
+        self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
     def run(self: "PlayerGameClient") -> NoReturn:
 
         while True:
@@ -24,18 +26,22 @@ class PlayerGameClient(Client):
             print(self.my_farm)
 
             if self.game_data["day"] == 0:
-                #self.add_command("0 EMPRUNTER 100000")
+                self.add_command("0 EMPRUNTER 100000")
                 self.add_command("1 ACHETER_CHAMP")
                 self.add_command("2 ACHETER_CHAMP")
                 self.add_command("3 ACHETER_CHAMP")
                 self.add_command("4 ACHETER_CHAMP")
                 self.add_command("5 ACHETER_CHAMP")
-                #self.add_command("0 ACHETER_TRACTEUR")
-                self.add_command("1 EMPLOYER")
-                self.add_command("2 EMPLOYER")
-                self.add_command("3 EMPLOYER")
-                self.add_command("4 EMPLOYER")
-                self.add_command("5 EMPLOYER")
+                self.add_command("0 ACHETER_TRACTEUR")
+                self.add_command("0 ACHETER_TRACTEUR")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
+                self.add_command("0 EMPLOYER")
                 self.add_command("1 SEMER TOMATE 1")
                 self.add_command("2 SEMER POIREAU 2")
                 self.add_command("3 SEMER PATATE 3")
@@ -43,24 +49,23 @@ class PlayerGameClient(Client):
                 self.add_command("5 SEMER COURGETTE 5")
             
             self.arroser(1, 1)
-            self.vendre(1)
             self.semer(1, 1, "TOMATE")
 
             self.arroser(2, 2)
-            self.vendre(2)
             self.semer(2, 2, "POIREAU")
 
             self.arroser(3, 3)
-            self.vendre(3)
             self.semer(3, 3, "PATATE")
 
             self.arroser(4, 4)
-            self.vendre(4)
             self.semer(4, 4, "OIGNON")
             
             self.arroser(5, 5)
-            self.vendre(5)
             self.semer(5, 5, "COURGETTE")
+            self.detection_fin_stockage()
+            self.stocker(6, 1)
+            self.stocker(7, 2)
+            self.cuisiner(8)
             self.send_commands()
 
     def arroser(self: "PlayerGameClient", ouvrier, champs):
@@ -81,6 +86,37 @@ class PlayerGameClient(Client):
     def semer(self: "PlayerGameClient", ouvrier, champs, legume):
         if self.game_data["day"] == self.date_vente[champs-1] + 2:
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+
+    def stocker(self: "PlayerGameClient", ouvrier, tracteur):
+        print(self.ouvrier_stockage_par_champ)
+        if self.ouvrier_en_cours_de_stockage(ouvrier):
+            return
+        for champ in reversed (range(5)):
+            if self.my_farm["fields"][champ]["needed_water"] == 0 and self.my_farm["fields"][champ]["content"] != "NONE" and not self.champs_en_cours_de_stockage[champ]:
+                self.add_command(f"{ouvrier} STOCKER {champ+1} {tracteur}")
+                self.champs_en_cours_de_stockage[champ] = True
+                self.ouvrier_stockage_par_champ[champ] = ouvrier
+                break
+    
+    def ouvrier_en_cours_de_stockage(self: "PlayerGameClient", ouvrier):
+        for ouvrier_stockage in self.ouvrier_stockage_par_champ:
+            if ouvrier_stockage == ouvrier:
+                return True
+        return False
+
+    def detection_fin_stockage(self: "PlayerGameClient"):
+        for numero_champ in range(5):
+            id_ouvrier_en_deplacement = self.ouvrier_stockage_par_champ[numero_champ]
+            for employe in self.my_farm["employees"]:
+                if employe["id"] == id_ouvrier_en_deplacement and employe["location"] == "SOUP_FACTORY":
+                    self.champs_en_cours_de_stockage[numero_champ] = False
+                    self.ouvrier_stockage_par_champ[numero_champ] = -1
+
+    def cuisiner(self: "PlayerGameClient", ouvrier):
+        for legume in "POTATO", "LEEK", "TOMATO", "ONION", "ZUCCHINI":
+            if self.my_farm["soup_factory"]["stock"][legume] == 0:
+                return
+            self.add_command(f"{ouvrier} CUISINER")
 
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
