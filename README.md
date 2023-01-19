@@ -4,7 +4,7 @@ We are the biggest farmer's you never seen !
 ## I - Installation des dépendances -
 Les dépendences sont indispensables pour pouvoir éxecuter le programme ensuite. Le fichier contient alors des packages nécessaires, qu'il faudra installer :
 ```
-pip install - r requirements.txt
+pip install -r requirements.txt
 ```
 ## II - Mise en place des tests -
 ### 1. Intaller pytest sur votre machine
