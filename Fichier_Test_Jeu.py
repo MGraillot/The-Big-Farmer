@@ -77,35 +77,71 @@ class PlayerGameClient(Client):
                 self.add_command("12 CUISINER")
                 self.add_command("13 CUISINER")
 
-            self.arroser_localisation(1, 1)
-            self.arroser_localisation(6, 1)
-            self.arroser_localisation(17, 1)
-            self.arroser_localisation(19, 1)
-            self.arroser_localisation(2, 2)
-            self.arroser_localisation(7, 2)
-            self.arroser_localisation(18, 2)
-            self.arroser_localisation(3, 3)
-            self.arroser_localisation(8, 3)
-            self.arroser_localisation(4, 4)
-            self.arroser_localisation(9, 4)
-            self.arroser_localisation(5, 5)
-            self.arroser_localisation(10, 5)
-            
-            self.semer_stock(1, 1, "TOMATE")
-            self.semer_stock(2, 2, "POIREAU")
-            self.semer_stock(3, 3, "PATATE")
-            self.semer_stock(4, 4, "OIGNON")
-            self.semer_stock(5, 5, "COURGETTE")
+            if self.game_data["day"] <= 41:
+                self.arroser_localisation(1, 1)
+                self.arroser_localisation(6, 1)
+                self.arroser_localisation(17, 1)
+                self.arroser_localisation(19, 1)
+                self.arroser_localisation(2, 2)
+                self.arroser_localisation(7, 2)
+                self.arroser_localisation(18, 2)
+                self.arroser_localisation(3, 3)
+                self.arroser_localisation(8, 3)
+                self.arroser_localisation(4, 4)
+                self.arroser_localisation(9, 4)
+                self.arroser_localisation(5, 5)
+                self.arroser_localisation(10, 5)
+                
+                self.semer_stock(1, 1, "TOMATE")
+                self.semer_stock(2, 2, "POIREAU")
+                self.semer_stock(3, 3, "PATATE")
+                self.semer_stock(4, 4, "OIGNON")
+                self.semer_stock(5, 5, "COURGETTE")
 
-            self.detection_fin_stockage()
-            self.stocker(14, 1)
-            self.stocker(15, 2)
-            self.stocker(16, 3)
-            self.cuisiner_5legumes(11)
-            self.cuisiner_5legumes(12)
-            self.cuisiner_5legumes(13)
-            self.cuisine_tout(20)
-            self.send_commands()
+                self.detection_fin_stockage()
+                self.stocker(14, 1)
+                self.stocker(15, 2)
+                self.stocker(16, 3)
+                self.cuisiner_5legumes(11)
+                self.cuisiner_5legumes(12)
+                self.cuisiner_5legumes(13)
+                self.cuisine_tout(20)
+                self.send_commands()
+            
+            if self.game_data["day"] == 42:
+                self.licencier_embaucher()
+                self.send_commands()
+
+            if self.game_data["day"] >= 42:
+                self.arroser_localisation(21, 1)
+                self.arroser_localisation(26, 1)
+                self.arroser_localisation(31, 1)
+                self.arroser_localisation(33, 1)
+                self.arroser_localisation(22, 2)
+                self.arroser_localisation(27, 2)
+                self.arroser_localisation(32, 2)
+                self.arroser_localisation(23, 3)
+                self.arroser_localisation(28, 3)
+                self.arroser_localisation(24, 4)
+                self.arroser_localisation(29, 4)
+                self.arroser_localisation(25, 5)
+                self.arroser_localisation(30, 5)
+                
+                self.semer_stock(21, 1, "TOMATE")
+                self.semer_stock(22, 2, "POIREAU")
+                self.semer_stock(23, 3, "PATATE")
+                self.semer_stock(24, 4, "OIGNON")
+                self.semer_stock(25, 5, "COURGETTE")
+
+                self.detection_fin_stockage()
+                self.stocker(34, 1)
+                self.stocker(35, 2)
+                self.stocker(36, 3)
+                self.cuisiner_5legumes(37)
+                self.cuisiner_5legumes(38)
+                self.cuisiner_5legumes(39)
+                self.cuisine_tout(40)
+                self.send_commands()
 
             for champs in range(5):
                 self.contenance_des_champs[champs] = self.my_farm["fields"][champs]["content"]
@@ -145,6 +181,7 @@ class PlayerGameClient(Client):
 
     def stocker(self: "PlayerGameClient", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
+        print(self.champs_en_cours_de_stockage)
         if self.ouvrier_en_cours_de_stockage(ouvrier):
             return
         for champ in reversed(range(5)):
@@ -191,6 +228,26 @@ class PlayerGameClient(Client):
                 return
         self.add_command(f"{ouvrier} CUISINER")
 
+    def licencier_embaucher (self: "PlayerGameClient"):
+     if self.game_data["day"] == 42:
+        for employe in range(20):
+            self.add_command(f"0 LICENCIER {employe+1}")
+            self.add_command("0 EMPLOYER")
+        self.add_command("21 ARROSER 1")
+        self.add_command("22 ARROSER 2")
+        self.add_command("23 ARROSER 3")
+        self.add_command("24 ARROSER 4")
+        self.add_command("25 ARROSER 5")
+        self.add_command("26 ARROSER 1")
+        self.add_command("27 ARROSER 2")
+        self.add_command("28 ARROSER 3")
+        self.add_command("29 ARROSER 4")
+        self.add_command("30 ARROSER 5")
+        self.add_command("31 ARROSER 1")
+        self.add_command("32 ARROSER 2")
+        self.add_command("33 ARROSER 1")
+        
+
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
 
@@ -221,3 +278,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     client = PlayerGameClient(args.address, args.port).run()
+
+
