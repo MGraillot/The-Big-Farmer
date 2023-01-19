@@ -4,7 +4,7 @@ We are the biggest farmer's you never seen !
 ## I - Installation des dépendances -
 Les dépendences sont indispensables pour pouvoir éxecuter le programme ensuite. Le fichier contient alors des packages nécessaires, qu'il faudra installer :
 ```
-pip install - r requirements.txt
+pip install -r requirements.txt
 ```
 ## II - Mise en place des tests -
 ### 1. Intaller pytest sur votre machine
@@ -24,7 +24,8 @@ Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et
 - Exécute le test de tout les fichiers et affiche les détails des tests par fonction : `pytest -rA`
 - Exécute le test d'un fichier en particulier et affiche les détails du tests par fonction : `pytest test_farmer.py -rA`
 - Exécute le test sur toutes les fonctions en particulier : `pytest -rA -k "test_nom"`
-- N'exécute le test sur une fonction en particulier d'un fichier en particulier : `pytest test_farmer.py -rA -k "test_nom"`
+- N'exécute que le test sur une fonction en particulier d'un fichier en particulier :
+`pytest test_farmer.py -rA -k "test_nom"`
 - Exécute le test sur toutes les fonctions en particulier et affiche les détails : `pytest -rA -k "test_nom" -v`
 
 ## III - Mesurer la couverture de code -
