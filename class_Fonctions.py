@@ -57,8 +57,6 @@ class Fonctions:
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
-            self.add_command("0 EMPLOYER")
-            self.add_command("0 EMPLOYER")
             self.add_command("1 SEMER TOMATE 1")
             self.add_command("2 SEMER POIREAU 2")
             self.add_command("3 SEMER PATATE 3")
@@ -71,17 +69,15 @@ class Fonctions:
             self.add_command("10 ARROSER 5")
             self.add_command("17 ARROSER 1")
             self.add_command("18 ARROSER 2")
-            self.add_command("19 ARROSER 1")
+            self.add_command("13 ARROSER 1")
             self.add_command("11 CUISINER")
             self.add_command("12 CUISINER")
-            self.add_command("13 CUISINER")
-            self.add_command("20 CUISINER")
 
         if self.game_data["day"] < 896:
             self.arroser_localisation(1, 1)
             self.arroser_localisation(6, 1)
             self.arroser_localisation(17, 1)
-            self.arroser_localisation(19, 1)
+            self.arroser_localisation(13, 1)
             self.arroser_localisation(2, 2)
             self.arroser_localisation(7, 2)
             self.arroser_localisation(18, 2)
@@ -104,8 +100,6 @@ class Fonctions:
             self.stocker(16, 3)
             self.cuisiner_5legumes(11)
             self.cuisiner_5legumes(12)
-            self.cuisiner_5legumes(13)
-            self.cuisiner_5legumes(20)
 
         if self.game_data["day"] == 896:
             self.licencier_embaucher()
@@ -137,8 +131,8 @@ class Fonctions:
             self.stocker(36, 3)
             self.cuisiner_5legumes(37)
             self.cuisiner_5legumes(38)
-            self.cuisiner_5legumes(39)
-            self.cuisiner_5legumes(40)
+            self.cuisiner_5legumes(19)
+            self.cuisiner_5legumes(20)
 
         for champs in range(5):
             self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
@@ -248,7 +242,7 @@ class Fonctions:
         self.add_command(f"{ouvrier} CUISINER")
 
     def licencier_embaucher(self: "Fonctions"):
-        for employe in range(20):
+        for employe in range(18):
             self.add_command(f"0 LICENCIER {employe+1}")
             self.add_command("0 EMPLOYER")
         for numero_champ in range(5):
@@ -256,6 +250,8 @@ class Fonctions:
                 self.add_command(f"{21+numero_champ} ARROSER {1 + numero_champ}")
             else:
                 self.add_command(f"{21+numero_champ} SEMER PATATE {1 + numero_champ}")
+        self.add_command("0 EMPLOYER")
+        self.add_command("0 EMPLOYER")
         self.add_command("26 ARROSER 1")
         self.add_command("27 ARROSER 2")
         self.add_command("28 ARROSER 3")
@@ -266,8 +262,8 @@ class Fonctions:
         self.add_command("33 ARROSER 1")
         self.add_command("37 CUISINER")
         self.add_command("38 CUISINER")
-        self.add_command("39 CUISINER")
-        self.add_command("40 CUISINER")
+        self.add_command("19 CUISINER")
+        self.add_command("20 CUISINER")
         self.champs_en_cours_de_stockage = [
             False,
             False,
