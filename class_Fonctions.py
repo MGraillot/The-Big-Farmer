@@ -16,6 +16,7 @@ class Fonctions:
         ]
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
+        self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
 
     def turn(self: "Fonctions", gamedata):
 
@@ -74,6 +75,7 @@ class Fonctions:
             self.add_command("11 CUISINER")
             self.add_command("12 CUISINER")
             self.add_command("13 CUISINER")
+            self.add_command("20 CUISINER")
 
         if self.game_data["day"] < 896:
             self.arroser_localisation(1, 1)
@@ -90,11 +92,11 @@ class Fonctions:
             self.arroser_localisation(5, 5)
             self.arroser_localisation(10, 5)
 
-            self.semer_stock(1, 1, "TOMATE")
-            self.semer_stock(2, 2, "POIREAU")
-            self.semer_stock(3, 3, "PATATE")
-            self.semer_stock(4, 4, "OIGNON")
-            self.semer_stock(5, 5, "COURGETTE")
+            self.semer_stock(1, 1)
+            self.semer_stock(2, 2)
+            self.semer_stock(3, 3)
+            self.semer_stock(4, 4)
+            self.semer_stock(5, 5)
 
             self.detection_fin_stockage()
             self.stocker(14, 1)
@@ -103,7 +105,7 @@ class Fonctions:
             self.cuisiner_5legumes(11)
             self.cuisiner_5legumes(12)
             self.cuisiner_5legumes(13)
-            self.cuisine_tout(20)
+            self.cuisiner_5legumes(20)
 
         if self.game_data["day"] == 896:
             self.licencier_embaucher()
@@ -123,11 +125,11 @@ class Fonctions:
             self.arroser_localisation(25, 5)
             self.arroser_localisation(30, 5)
 
-            self.semer_stock(21, 1, "TOMATE")
-            self.semer_stock(22, 2, "POIREAU")
-            self.semer_stock(23, 3, "PATATE")
-            self.semer_stock(24, 4, "OIGNON")
-            self.semer_stock(25, 5, "COURGETTE")
+            self.semer_stock(21, 1)
+            self.semer_stock(22, 2)
+            self.semer_stock(23, 3)
+            self.semer_stock(24, 4)
+            self.semer_stock(25, 5)
 
             self.detection_fin_stockage()
             self.stocker(34, 1)
@@ -136,7 +138,7 @@ class Fonctions:
             self.cuisiner_5legumes(37)
             self.cuisiner_5legumes(38)
             self.cuisiner_5legumes(39)
-            self.cuisine_tout(40)
+            self.cuisiner_5legumes(40)
 
         for champs in range(5):
             self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
@@ -168,12 +170,32 @@ class Fonctions:
         if self.game_data["day"] == self.date_vente[champs - 1] + 2:
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
-    def semer_stock(self: "Fonctions", ouvrier, champs, legume):
-
+    def semer_stock(self: "Fonctions", ouvrier, champs):
+        self.trie_des_stock_de_legume = self.my_farm["soup_factory"]["stock"]
+        sorted_legume_by_stock = sorted(
+            self.trie_des_stock_de_legume.items(), key=lambda x: x[1]
+        )
+        legume = sorted_legume_by_stock[0][0]
+        print(sorted_legume_by_stock)
+        print(legume)
         if (
             self.my_farm["fields"][champs - 1]["content"] == "NONE"
             and self.contenance_des_champs[champs - 1] != "NONE"
         ):
+            if legume == ("POTATO"):
+                legume = "PATATE"
+
+            elif legume == ("LEEK"):
+                legume = "POIREAU"
+
+            elif legume == ("ONION"):
+                legume = "OIGNON"
+
+            elif legume == ("TOMATO"):
+                legume = "TOMATE"
+
+            elif legume == ("ZUCCHINI"):
+                legume = "COURGETTE"
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "Fonctions", ouvrier, tracteur):
