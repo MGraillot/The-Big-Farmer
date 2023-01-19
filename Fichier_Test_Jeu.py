@@ -18,6 +18,7 @@ class PlayerGameClient(Client):
         ]
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
+
     def run(self: "PlayerGameClient") -> NoReturn:
 
         while True:
@@ -62,7 +63,6 @@ class PlayerGameClient(Client):
             self.arroser(4, 4)
             self.arroser(5, 5)
 
-
             self.semer_stock(1, 1, "TOMATE")
             self.semer_stock(2, 2, "POIREAU")
             self.semer_stock(3, 3, "PATATE")
@@ -77,7 +77,9 @@ class PlayerGameClient(Client):
             self.send_commands()
 
             for champs in range(5):
-                self.contenance_des_champs[champs] = self.my_farm["fields"][champs]["content"]
+                self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
+                    "content"
+                ]
 
     def arroser(self: "PlayerGameClient", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
@@ -103,8 +105,11 @@ class PlayerGameClient(Client):
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def semer_stock(self: "PlayerGameClient", ouvrier, champs, legume):
-        
-        if self.my_farm["fields"][champs-1]["content"] == "NONE" and self.contenance_des_champs[champs-1] != "NONE":
+
+        if (
+            self.my_farm["fields"][champs - 1]["content"] == "NONE"
+            and self.contenance_des_champs[champs - 1] != "NONE"
+        ):
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "PlayerGameClient", ouvrier, tracteur):
