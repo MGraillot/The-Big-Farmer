@@ -56,13 +56,13 @@ monproj/fonctionnalité4286 94 7 92%
 TOTAL 353 20 94%
 ```
 # = AIDE LANCEMENT DU JEU =
-### - Connexion au serveur :
+### : Connexion au serveur :
 Dans un premier terminal de commande entrer la ligne suivante
 ```
 python3 -m chronobio.game.server -p $port
 ```
 Remplacer $port par un numéro de serveur > 1024
-### - Démarrage du fichier jeu :
+### : Démarrage du fichier jeu :
 Dans un deuxième terminal entrer la ligne suivante
 ```
 python3 name_game_file.py -p $port -u THE_BIG_FARMER
