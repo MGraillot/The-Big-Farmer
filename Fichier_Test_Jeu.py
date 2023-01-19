@@ -18,6 +18,7 @@ class PlayerGameClient(Client):
         ]
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
+
     def run(self: "PlayerGameClient") -> NoReturn:
 
         while True:
@@ -91,7 +92,7 @@ class PlayerGameClient(Client):
                 self.arroser_localisation(9, 4)
                 self.arroser_localisation(5, 5)
                 self.arroser_localisation(10, 5)
-                
+
                 self.semer_stock(1, 1, "TOMATE")
                 self.semer_stock(2, 2, "POIREAU")
                 self.semer_stock(3, 3, "PATATE")
@@ -107,7 +108,7 @@ class PlayerGameClient(Client):
                 self.cuisiner_5legumes(13)
                 self.cuisine_tout(20)
                 self.send_commands()
-            
+
             if self.game_data["day"] == 42:
                 self.licencier_embaucher()
                 self.send_commands()
@@ -126,7 +127,7 @@ class PlayerGameClient(Client):
                 self.arroser_localisation(29, 4)
                 self.arroser_localisation(25, 5)
                 self.arroser_localisation(30, 5)
-                
+
                 self.semer_stock(21, 1, "TOMATE")
                 self.semer_stock(22, 2, "POIREAU")
                 self.semer_stock(23, 3, "PATATE")
@@ -144,15 +145,14 @@ class PlayerGameClient(Client):
                 self.send_commands()
 
             for champs in range(5):
-                self.contenance_des_champs[champs] = self.my_farm["fields"][champs]["content"]
+                self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
+                    "content"
+                ]
 
     def arroser_localisation(self: "PlayerGameClient", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
             for employe in self.my_farm["employees"]:
-                if (
-                    employe["id"] == ouvrier
-                    and employe["location"] == f"FIELD{champs}"
-                ):
+                if employe["id"] == ouvrier and employe["location"] == f"FIELD{champs}":
                     self.add_command(f"{ouvrier} ARROSER {champs}")
 
     def vendre(self: "PlayerGameClient", champs):
@@ -175,8 +175,11 @@ class PlayerGameClient(Client):
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def semer_stock(self: "PlayerGameClient", ouvrier, champs, legume):
-        
-        if self.my_farm["fields"][champs-1]["content"] == "NONE" and self.contenance_des_champs[champs-1] != "NONE":
+
+        if (
+            self.my_farm["fields"][champs - 1]["content"] == "NONE"
+            and self.contenance_des_champs[champs - 1] != "NONE"
+        ):
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "PlayerGameClient", ouvrier, tracteur):
@@ -228,25 +231,24 @@ class PlayerGameClient(Client):
                 return
         self.add_command(f"{ouvrier} CUISINER")
 
-    def licencier_embaucher (self: "PlayerGameClient"):
-     if self.game_data["day"] == 42:
-        for employe in range(20):
-            self.add_command(f"0 LICENCIER {employe+1}")
-            self.add_command("0 EMPLOYER")
-        self.add_command("21 ARROSER 1")
-        self.add_command("22 ARROSER 2")
-        self.add_command("23 ARROSER 3")
-        self.add_command("24 ARROSER 4")
-        self.add_command("25 ARROSER 5")
-        self.add_command("26 ARROSER 1")
-        self.add_command("27 ARROSER 2")
-        self.add_command("28 ARROSER 3")
-        self.add_command("29 ARROSER 4")
-        self.add_command("30 ARROSER 5")
-        self.add_command("31 ARROSER 1")
-        self.add_command("32 ARROSER 2")
-        self.add_command("33 ARROSER 1")
-        
+    def licencier_embaucher(self: "PlayerGameClient"):
+        if self.game_data["day"] == 42:
+            for employe in range(20):
+                self.add_command(f"0 LICENCIER {employe+1}")
+                self.add_command("0 EMPLOYER")
+            self.add_command("21 ARROSER 1")
+            self.add_command("22 ARROSER 2")
+            self.add_command("23 ARROSER 3")
+            self.add_command("24 ARROSER 4")
+            self.add_command("25 ARROSER 5")
+            self.add_command("26 ARROSER 1")
+            self.add_command("27 ARROSER 2")
+            self.add_command("28 ARROSER 3")
+            self.add_command("29 ARROSER 4")
+            self.add_command("30 ARROSER 5")
+            self.add_command("31 ARROSER 1")
+            self.add_command("32 ARROSER 2")
+            self.add_command("33 ARROSER 1")
 
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
@@ -278,5 +280,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     client = PlayerGameClient(args.address, args.port).run()
-
-
