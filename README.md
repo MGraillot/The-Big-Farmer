@@ -106,5 +106,5 @@ Des pre-commit sont disponibles au sein de projet.
 ## Comment cela fonctionne ?
 Et bien c'est tout simple, ceux sont des vérifications qui sont faites sur les fichiers du projet ou un fichier en particulier (ex : le fichier de jeu), afin d'identifier des erreurs avant d'effectuer une mise à jour sur le dépôt github de la Team.
 Les vérifications seront les suivantes :
-    * PEP8
-    * Format du code grâce au check de blake
+- PEP8
+- Format du code grâce au check de blake
