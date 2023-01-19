@@ -18,10 +18,15 @@ ATTENTION ! Veillez à bien activer l'envrionnement virtuel (venv)
 pip install -u pytest
 ```
 #### c. Tests avec pytest :
-Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et éxecuter la ligne suivante
-```
-pytest
-```
+Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et éxecuter la/les ligne(s) suivante(s):
+
+- Exécute tous les fichiers comportant dans leur nom 'test_nom.py' : `pytest`
+- Exécute le test de tout les fichiers et affiche les détails des tests par fonction : `pytest -rA`
+- Exécute le test d'un fichier en particulier et affiche les détails du tests par fonction : `pytest test_farmer.py -rA`
+- Exécute le test sur toutes les fonctions en particulier : `pytest -rA -k "test_nom"`
+- N'exécute le test sur une fonction en particulier d'un fichier en particulier : `pytest test_farmer.py -rA -k "test_nom"`
+- Exécute le test sur toutes les fonctions en particulier et affiche les détails : `pytest -rA -k "test_nom" -v`
+
 ## III - Mesurer la couverture de code -
 ### 1. Intaller pytest + plugin coverage sur votre machine
 #### a. Travailler sur l'environnement virtuel :
@@ -101,5 +106,5 @@ Des pre-commit sont disponibles au sein de projet.
 ## Comment cela fonctionne ?
 Et bien c'est tout simple, ceux sont des vérifications qui sont faites sur les fichiers du projet ou un fichier en particulier (ex : le fichier de jeu), afin d'identifier des erreurs avant d'effectuer une mise à jour sur le dépôt github de la Team.
 Les vérifications seront les suivantes :
-    * PEP8
-    * Format du code grâce au check de blake
+- PEP8
+- Format du code grâce au check de blake
