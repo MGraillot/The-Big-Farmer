@@ -1,37 +1,34 @@
 # THE BIG FARMER
 We are the biggest farmer's you never seen !
 
-## I - Mise en place des tests -
-
+## I - Installation des dépendances -
+Les dépendences sont indispensables pour pouvoir éxecuter le programme ensuite. Le fichier contient alors des packages nécessaires, qu'il faudra installer :
+```
+pip install - r requirements.txt
+```
+## II - Mise en place des tests -
 ### 1. Intaller pytest sur votre machine
-
 #### a. Travailler sur l'environnement virtuel :
 ATTENTION ! Veillez à bien activer l'envrionnement virtuel (venv)
 
     * Windows : `venv\Scripts\activate.bat`
     * Unix/MacOS : `source venv/bin/activate`
-
 #### b. Installation de pytest :
 ```
 pip install -u pytest
 ```
-
 #### c. Tests avec pytest :
 Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et éxecuter la ligne suivante
 ```
 pytest
 ```
-
-## II - Mesurer la couverture de code -
-
+## III - Mesurer la couverture de code -
 ### 1. Intaller pytest + plugin coverage sur votre machine
-
 #### a. Travailler sur l'environnement virtuel :
 ATTENTION ! Veillez à bien activer l'envrionnement virtuel (venv)
 
     * Windows : `venv\Scripts\Activate.ps1`
     * Unix/MacOS : `source venv/bin/activate`
-
 #### b. Installation de pytest + plugin coverage :
 ```
 pip install pytest-cov
@@ -41,7 +38,6 @@ Pour cela il est nécessaire d'isntaller `-xdist`
 ```
 pip install pytest -xdist
 ```
-
 #### c. Tests avec pytest-cov :
 Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et éxecuter la ligne suivante
 ```
@@ -59,16 +55,13 @@ monproj/fonctionnalité4286 94 7 92%
 ----------------------------------------
 TOTAL 353 20 94%
 ```
-
 # = AIDE LANCEMENT DU JEU =
-
 ### - Connexion au serveur :
 Dans un premier terminal de commande entrer la ligne suivante
 ```
 python3 -m chronobio.game.server -p $port
 ```
 Remplacer $port par un numéro de serveur > 1024
-
 ### - Démarrage du fichier jeu :
 Dans un deuxième terminal entrer la ligne suivante
 ```
@@ -104,3 +97,9 @@ Remplacer $port par le même numéro de serveur que précédement en respectant 
 /!\ Il faut garder les terminaux ouverts /!\
 
 # = PRE-COMMIT =
+Des pre-commit sont disponibles au sein de projet.
+## Comment cela fonctionne ?
+Et bien c'est tout simple, ceux sont des vérifications qui sont faites sur les fichiers du projet ou un fichier en particulier (ex : le fichier de jeu), afin d'identifier des erreurs avant d'effectuer une mise à jour sur le dépôt github de la Team.
+Les vérifications seront les suivantes :
+    * PEP8
+    * Format du code grâce au check de blake
