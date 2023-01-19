@@ -78,7 +78,7 @@ class PlayerGameClient(Client):
                 self.add_command("12 CUISINER")
                 self.add_command("13 CUISINER")
 
-            if self.game_data["day"] <= 41:
+            if self.game_data["day"] < 896:
                 self.arroser_localisation(1, 1)
                 self.arroser_localisation(6, 1)
                 self.arroser_localisation(17, 1)
@@ -107,13 +107,11 @@ class PlayerGameClient(Client):
                 self.cuisiner_5legumes(12)
                 self.cuisiner_5legumes(13)
                 self.cuisine_tout(20)
-                self.send_commands()
 
-            if self.game_data["day"] == 42:
+            if self.game_data["day"] == 896:
                 self.licencier_embaucher()
-                self.send_commands()
 
-            if self.game_data["day"] >= 42:
+            if self.game_data["day"] > 896:
                 self.arroser_localisation(21, 1)
                 self.arroser_localisation(26, 1)
                 self.arroser_localisation(31, 1)
@@ -142,12 +140,12 @@ class PlayerGameClient(Client):
                 self.cuisiner_5legumes(38)
                 self.cuisiner_5legumes(39)
                 self.cuisine_tout(40)
-                self.send_commands()
 
             for champs in range(5):
                 self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
                     "content"
                 ]
+            self.send_commands()
 
     def arroser_localisation(self: "PlayerGameClient", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
@@ -232,23 +230,34 @@ class PlayerGameClient(Client):
         self.add_command(f"{ouvrier} CUISINER")
 
     def licencier_embaucher(self: "PlayerGameClient"):
-        if self.game_data["day"] == 42:
-            for employe in range(20):
-                self.add_command(f"0 LICENCIER {employe+1}")
-                self.add_command("0 EMPLOYER")
-            self.add_command("21 ARROSER 1")
-            self.add_command("22 ARROSER 2")
-            self.add_command("23 ARROSER 3")
-            self.add_command("24 ARROSER 4")
-            self.add_command("25 ARROSER 5")
-            self.add_command("26 ARROSER 1")
-            self.add_command("27 ARROSER 2")
-            self.add_command("28 ARROSER 3")
-            self.add_command("29 ARROSER 4")
-            self.add_command("30 ARROSER 5")
-            self.add_command("31 ARROSER 1")
-            self.add_command("32 ARROSER 2")
-            self.add_command("33 ARROSER 1")
+        for employe in range(20):
+            self.add_command(f"0 LICENCIER {employe+1}")
+            self.add_command("0 EMPLOYER")
+        for numero_champ in range(5):
+            if self.my_farm["fields"][numero_champ]["content"] != "NONE":
+                self.add_command(f"{21+numero_champ} ARROSER {1 + numero_champ}")
+            else:
+                self.add_command(f"{21+numero_champ} SEMER PATATE {1 + numero_champ}")
+        self.add_command("26 ARROSER 1")
+        self.add_command("27 ARROSER 2")
+        self.add_command("28 ARROSER 3")
+        self.add_command("29 ARROSER 4")
+        self.add_command("30 ARROSER 5")
+        self.add_command("31 ARROSER 1")
+        self.add_command("32 ARROSER 2")
+        self.add_command("33 ARROSER 1")
+        self.add_command("37 CUISINER")
+        self.add_command("38 CUISINER")
+        self.add_command("39 CUISINER")
+        self.add_command("40 CUISINER")
+        self.champs_en_cours_de_stockage = [
+            False,
+            False,
+            False,
+            False,
+            False,
+        ]
+        self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
     def add_command(self: "PlayerGameClient", command: str) -> None:
         self._commands.append(command)
