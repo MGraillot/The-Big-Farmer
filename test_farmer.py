@@ -1,6 +1,7 @@
 # FILE FOR FUNCTION == TEST
 # complete with functions and tests
 
+# import class_Fonctions
 
 # =====================
 # Examples
