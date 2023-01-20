@@ -258,7 +258,7 @@ class Ferme:
     def stocker(self: "Ferme", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
         print(self.champs_en_cours_de_stockage)
-        if self.jour_de_catastrophe_climatique[0] != 0:
+        if self.jour_de_catastrophe_climatique != 0:
             return
         elif self.ouvrier_en_cours_de_stockage(ouvrier):
             return
