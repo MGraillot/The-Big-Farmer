@@ -358,11 +358,11 @@ class Ferme:
 
     def action_climat(self: "Ferme"):
         if self.jour_de_catastrophe_climatique != 0:
-            self.vendre(0, 1)
-            self.vendre(0, 2)
-            self.vendre(0, 3)
-            self.vendre(0, 4)
-            self.vendre(0, 5)
+            self.vendre(1)
+            self.vendre(2)
+            self.vendre(3)
+            self.vendre(4)
+            self.vendre(5)
             self.jour_de_catastrophe_climatique = (
                 self.jour_de_catastrophe_climatique - 1
             )
