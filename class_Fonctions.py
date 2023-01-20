@@ -13,7 +13,7 @@ class Ferme:
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
         self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
-        self.jour_de_catastrophe_climatique: list[int] = [0]
+        self.jour_de_catastrophe_climatique: int = 0
 
     def turn(self: "Ferme", gamedata):
 
@@ -345,27 +345,26 @@ class Ferme:
         self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
     def detection_climat(self: "Ferme"):
-        if "flood" in self.game_data["events"]:
-            self.jour_de_catastrophe_climatique = (
-                self.jour_de_catastrophe_climatique[0] + 20
-            )
+        for event in self.game_data["events"]:
+            if "flood" in event:
+                self.jour_de_catastrophe_climatique = (
+                    self.jour_de_catastrophe_climatique + 20
+                )
 
-        elif "fire" in self.game_data["events"]:
-            self.jour_de_catastrophe_climatique = (
-                self.jour_de_catastrophe_climatique[0] + 40
-            )
-        else:
-            return
+            elif "fire" in event:
+                self.jour_de_catastrophe_climatique = (
+                    self.jour_de_catastrophe_climatique + 40
+                )
 
     def action_climat(self: "Ferme"):
-        if self.jour_de_catastrophe_climatique[0] != 0:
+        if self.jour_de_catastrophe_climatique != 0:
             self.vendre(0, 1)
             self.vendre(0, 2)
             self.vendre(0, 3)
             self.vendre(0, 4)
             self.vendre(0, 5)
             self.jour_de_catastrophe_climatique = (
-                self.jour_de_catastrophe_climatique[0] - 1
+                self.jour_de_catastrophe_climatique - 1
             )
 
     def add_command(self: "Ferme", command: str) -> None:
