@@ -27,7 +27,7 @@ class Ferme:
         print(self.my_farm)
 
         if self.game_data["day"] == 0:
-            self.add_command("0 EMPRUNTER 90000")
+            self.add_command("0 EMPRUNTER 40000")
             self.add_command("0 ACHETER_CHAMP")
             self.add_command("0 ACHETER_CHAMP")
             self.add_command("0 ACHETER_CHAMP")
@@ -36,8 +36,6 @@ class Ferme:
             self.add_command("0 ACHETER_TRACTEUR")
             self.add_command("0 ACHETER_TRACTEUR")
             self.add_command("0 ACHETER_TRACTEUR")
-            self.add_command("0 ACHETER_TRACTEUR")
-            self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
@@ -100,7 +98,7 @@ class Ferme:
             self.add_command("12 CUISINER")
             self.add_command("32 CUISINER")
             self.add_command("33 CUISINER")
-            self.add_command("34 CUISINER")
+            self.add_command("31 CUISINER")
 
         if self.game_data["day"] < 896:
             self.arroser_localisation(1, 1)
@@ -142,12 +140,12 @@ class Ferme:
             self.stocker(14, 1)
             self.stocker(15, 2)
             self.stocker(16, 3)
-            self.stocker(31, 4)
+
             self.cuisiner_5legumes(11)
             self.cuisiner_5legumes(12)
             self.cuisiner_5legumes(32)
             self.cuisiner_5legumes(33)
-            self.cuisiner_5legumes(34)
+            self.cuisiner_5legumes(31)
 
         if self.game_data["day"] == 896:
             self.licencier_embaucher()
@@ -192,12 +190,12 @@ class Ferme:
             self.stocker(60, 1)
             self.stocker(61, 2)
             self.stocker(62, 3)
-            self.stocker(63, 4)
+
             self.cuisiner_5legumes(64)
             self.cuisiner_5legumes(65)
             self.cuisiner_5legumes(66)
             self.cuisiner_5legumes(67)
-            self.cuisiner_5legumes(68)
+            self.cuisiner_5legumes(63)
 
         for champs in range(5):
             self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
@@ -303,7 +301,7 @@ class Ferme:
         self.add_command(f"{ouvrier} CUISINER")
 
     def licencier_embaucher(self: "Ferme"):
-        for employe in range(34):
+        for employe in range(33):
             self.add_command(f"0 LICENCIER {employe+1}")
             self.add_command("0 EMPLOYER")
         for numero_champ in range(5):
@@ -336,7 +334,7 @@ class Ferme:
         self.add_command("65 CUISINER")
         self.add_command("66 CUISINER")
         self.add_command("67 CUISINER")
-        self.add_command("68 CUISINER")
+        self.add_command("63 CUISINER")
         self.champs_en_cours_de_stockage = [
             False,
             False,
