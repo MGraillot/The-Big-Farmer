@@ -1,9 +1,5 @@
-import argparse
-from typing import NoReturn
-
-
-class Fonctions:
-    def __init__(self: "Fonctions", username) -> None:
+class Ferme:
+    def __init__(self: "Ferme", username) -> None:
         self.username = username
         self._commands: list[str] = []
         self.date_vente: list[int] = [-100, -100, -100, -100, -100]
@@ -17,8 +13,9 @@ class Fonctions:
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
         self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
+        self.jour_de_catastrophe_climatique: list[int] = [0]
 
-    def turn(self: "Fonctions", gamedata):
+    def turn(self: "Ferme", gamedata):
 
         self.game_data = gamedata
         for farm in self.game_data["farms"]:
@@ -132,6 +129,9 @@ class Fonctions:
             self.arroser_localisation(29, 4)
             self.arroser_localisation(30, 5)
 
+            self.detection_climat()
+            self.action_climat()
+
             self.semer_stock(1, 1)
             self.semer_stock(2, 2)
             self.semer_stock(3, 3)
@@ -179,6 +179,9 @@ class Fonctions:
             self.arroser_localisation(58, 4)
             self.arroser_localisation(59, 5)
 
+            self.detection_climat()
+            self.action_climat()
+
             self.semer_stock(35, 1)
             self.semer_stock(36, 2)
             self.semer_stock(37, 3)
@@ -201,13 +204,13 @@ class Fonctions:
                 "content"
             ]
 
-    def arroser_localisation(self: "Fonctions", ouvrier, champs):
+    def arroser_localisation(self: "Ferme", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
             for employe in self.my_farm["employees"]:
                 if employe["id"] == ouvrier and employe["location"] == f"FIELD{champs}":
                     self.add_command(f"{ouvrier} ARROSER {champs}")
 
-    def vendre(self: "Fonctions", champs):
+    def vendre(self: "Ferme", champs):
         champs_en_cours_de_vente = False
         for index in range(5):
             if self.game_data["day"] <= self.date_vente[index] + 2:
@@ -222,11 +225,11 @@ class Fonctions:
             self.add_command(f"0 VENDRE {champs}")
             self.date_vente[champs - 1] = self.game_data["day"]
 
-    def semer_vente(self: "Fonctions", ouvrier, champs, legume):
+    def semer_vente(self: "Ferme", ouvrier, champs, legume):
         if self.game_data["day"] == self.date_vente[champs - 1] + 2:
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
-    def semer_stock(self: "Fonctions", ouvrier, champs):
+    def semer_stock(self: "Ferme", ouvrier, champs):
         self.trie_des_stock_de_legume = self.my_farm["soup_factory"]["stock"]
         sorted_legume_by_stock = sorted(
             self.trie_des_stock_de_legume.items(), key=lambda x: x[1]
@@ -254,10 +257,12 @@ class Fonctions:
                 legume = "COURGETTE"
             self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
-    def stocker(self: "Fonctions", ouvrier, tracteur):
+    def stocker(self: "Ferme", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
         print(self.champs_en_cours_de_stockage)
-        if self.ouvrier_en_cours_de_stockage(ouvrier):
+        if self.jour_de_catastrophe_climatique[0] != 0:
+            return
+        elif self.ouvrier_en_cours_de_stockage(ouvrier):
             return
         for champ in reversed(range(5)):
             if (
@@ -270,13 +275,13 @@ class Fonctions:
                 self.ouvrier_stockage_par_champ[champ] = ouvrier
                 break
 
-    def ouvrier_en_cours_de_stockage(self: "Fonctions", ouvrier):
+    def ouvrier_en_cours_de_stockage(self: "Ferme", ouvrier):
         for ouvrier_stockage in self.ouvrier_stockage_par_champ:
             if ouvrier_stockage == ouvrier:
                 return True
         return False
 
-    def detection_fin_stockage(self: "Fonctions"):
+    def detection_fin_stockage(self: "Ferme"):
         for numero_champ in range(5):
             id_ouvrier_en_deplacement = self.ouvrier_stockage_par_champ[numero_champ]
             for employe in self.my_farm["employees"]:
@@ -287,7 +292,7 @@ class Fonctions:
                     self.champs_en_cours_de_stockage[numero_champ] = False
                     self.ouvrier_stockage_par_champ[numero_champ] = -1
 
-    def cuisiner_5legumes(self: "Fonctions", ouvrier):
+    def cuisiner_5legumes(self: "Ferme", ouvrier):
         for employe in self.my_farm["employees"]:
             if employe["id"] == ouvrier and employe["location"] != "SOUP_FACTORY":
                 return
@@ -297,7 +302,7 @@ class Fonctions:
                 return
         self.add_command(f"{ouvrier} CUISINER")
 
-    def licencier_embaucher(self: "Fonctions"):
+    def licencier_embaucher(self: "Ferme"):
         for employe in range(34):
             self.add_command(f"0 LICENCIER {employe+1}")
             self.add_command("0 EMPLOYER")
@@ -341,5 +346,29 @@ class Fonctions:
         ]
         self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
-    def add_command(self: "Fonctions", command: str) -> None:
+    def detection_climat(self: "Ferme"):
+        if "flood" in self.game_data["events"]:
+            self.jour_de_catastrophe_climatique = (
+                self.jour_de_catastrophe_climatique[0] + 20
+            )
+
+        elif "fire" in self.game_data["events"]:
+            self.jour_de_catastrophe_climatique = (
+                self.jour_de_catastrophe_climatique[0] + 40
+            )
+        else:
+            return
+
+    def action_climat(self: "Ferme"):
+        if self.jour_de_catastrophe_climatique[0] != 0:
+            self.vendre(0, 1)
+            self.vendre(0, 2)
+            self.vendre(0, 3)
+            self.vendre(0, 4)
+            self.vendre(0, 5)
+            self.jour_de_catastrophe_climatique = (
+                self.jour_de_catastrophe_climatique[0] - 1
+            )
+
+    def add_command(self: "Ferme", command: str) -> None:
         self._commands.append(command)

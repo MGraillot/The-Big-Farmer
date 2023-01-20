@@ -1,5 +1,5 @@
 import argparse
-from class_Fonctions import Fonctions
+from class_Fonctions import Ferme
 from typing import NoReturn
 
 from chronobio.network.client import Client
@@ -7,8 +7,8 @@ from chronobio.network.client import Client
 
 class PlayerGameClient(Client):
     def __init__(self: "PlayerGameClient", server_addr: str, port: int) -> None:
-        super().__init__(server_addr, port, "THE_BIG_FARMER", spectator=False)
-        self.fonction = Fonctions("THE_BIG_FARMER")
+        super().__init__(server_addr, port, "THE BIG FARMER", spectator=False)
+        self.fonction = Ferme("THE BIG FARMER")
 
     def run(self: "PlayerGameClient") -> NoReturn:
         while True:
