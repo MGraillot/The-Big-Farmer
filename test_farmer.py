@@ -202,6 +202,19 @@ def test_vendre():
     assert ferme._commands == []
 
 
+def test_ne_pas_vendre():
+    ferme = Ferme("Ferme_1")
+    ferme.my_farm = copy.deepcopy(my_farm_de_base)
+    champ = ferme.my_farm["fields"][2]
+    champ["needed_water"] = 0
+
+    ferme._commands.clear()
+
+    ferme.vendre(champ)
+
+    assert ferme._commands == [f"0 VENDRE{champ ['location'][-1]}"]
+
+
 # DEF SEMER VENTE TEST
 
 
