@@ -199,6 +199,7 @@ class Ferme:
             self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
                 "content"
             ]
+        print(self.contenance_des_champs)
 
     def arroser_localisation(self: "Ferme", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
@@ -233,25 +234,28 @@ class Ferme:
         legume = sorted_legume_by_stock[0][0]
         print(sorted_legume_by_stock)
         print(legume)
-        if (
-            self.my_farm["fields"][champs - 1]["content"] == "NONE"
-            and self.contenance_des_champs[champs - 1] != "NONE"
-        ):
-            if legume == ("POTATO"):
-                legume = "PATATE"
+        for employe in self.my_farm["employees"]:
+            if (
+                employe["id"] == ouvrier
+                and employe["location"] == f"FIELD{champs}"
+                and self.my_farm["fields"][champs - 1]["content"] == "NONE"
+            ):
 
-            elif legume == ("LEEK"):
-                legume = "POIREAU"
+                if legume == ("POTATO"):
+                    legume = "PATATE"
 
-            elif legume == ("ONION"):
-                legume = "OIGNON"
+                elif legume == ("LEEK"):
+                    legume = "POIREAU"
 
-            elif legume == ("TOMATO"):
-                legume = "TOMATE"
+                elif legume == ("ONION"):
+                    legume = "OIGNON"
 
-            elif legume == ("ZUCCHINI"):
-                legume = "COURGETTE"
-            self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+                elif legume == ("TOMATO"):
+                    legume = "TOMATE"
+
+                elif legume == ("ZUCCHINI"):
+                    legume = "COURGETTE"
+                self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "Ferme", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
