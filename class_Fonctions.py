@@ -128,7 +128,6 @@ class Ferme:
             self.arroser_localisation(30, 5)
 
             self.detection_climat()
-            self.action_climat()
 
             self.semer_stock(1, 1)
             self.semer_stock(2, 2)
@@ -178,7 +177,6 @@ class Ferme:
             self.arroser_localisation(59, 5)
 
             self.detection_climat()
-            self.action_climat()
 
             self.semer_stock(35, 1)
             self.semer_stock(36, 2)
