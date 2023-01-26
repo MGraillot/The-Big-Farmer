@@ -44,7 +44,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         filename="THE BIG FARMER.log",
         encoding="utf-8",
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="%(asctime)s [%(levelname)-8s] %(filename)20s(%(lineno)3s):%(funcName)-20s :: %(message)s",
         datefmt="%m/%d/%Y %H:%M:%S",
     )
