@@ -150,6 +150,7 @@ class Ferme:
             self.semer_stock(5, 5)
 
             self.detection_fin_stockage()
+            self.detection_fin_stockage_climat()
             self.stocker(14, 1)
             self.stocker(15, 2)
             self.stocker(16, 3)
@@ -203,6 +204,7 @@ class Ferme:
             self.semer_stock(39, 5)
 
             self.detection_fin_stockage()
+            self.detection_fin_stockage_climat()
             self.stocker(60, 1)
             self.stocker(61, 2)
             self.stocker(62, 3)
