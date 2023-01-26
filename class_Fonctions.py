@@ -18,7 +18,7 @@ class Ferme:
         self.jour_de_catastrophe_climatique: int = 0
 
     def turn(self: "Ferme", gamedata):
-
+        logging.info("turn")
         self.game_data = gamedata
         for farm in self.game_data["farms"]:
             if farm["name"] == self.username:
@@ -103,6 +103,7 @@ class Ferme:
             self.add_command("31 CUISINER")
 
         if self.game_data["day"] < 896:
+            logging.info("arroser_localisation")
             self.arroser_localisation(1, 1)
             self.arroser_localisation(2, 2)
             self.arroser_localisation(3, 3)
@@ -128,9 +129,9 @@ class Ferme:
             self.arroser_localisation(28, 3)
             self.arroser_localisation(29, 4)
             self.arroser_localisation(30, 5)
-
+            logging.info("detection_climat")
             self.detection_climat()
-
+            logging.info("detection_climat")
             self.semer_stock(1, 1)
             self.semer_stock(2, 2)
             self.semer_stock(3, 3)
@@ -149,9 +150,11 @@ class Ferme:
             self.cuisiner_5legumes(31)
 
         if self.game_data["day"] == 896:
+            logging.info("licencié_embauché")
             self.licencier_embaucher()
 
         if self.game_data["day"] > 896:
+            logging.info("arroser_localisation")
             self.arroser_localisation(35, 1)
             self.arroser_localisation(36, 2)
             self.arroser_localisation(37, 3)
@@ -178,7 +181,9 @@ class Ferme:
             self.arroser_localisation(58, 4)
             self.arroser_localisation(59, 5)
 
+            logging.info("detection_climat")
             self.detection_climat()
+            logging.info("detection_climat")
 
             self.semer_stock(35, 1)
             self.semer_stock(36, 2)
@@ -343,11 +348,13 @@ class Ferme:
                     numero_de_champ = int(event[-1:])
                     self.champs_en_cours_de_stockage[numero_de_champ] = False
                     self.ouvrier_stockage_par_champ[numero_de_champ] = -1
+                    logging.info("fire")
 
             elif "frost" in event or "heat wave" in event:
                 numero_de_champ = int(event[-1:])
                 self.champs_en_cours_de_stockage[numero_de_champ] = False
                 self.ouvrier_stockage_par_champ[numero_de_champ] = -1
+                logging.info("frost or heat wave")
 
     def add_command(self: "Ferme", command: str) -> None:
         logging.info(command)
