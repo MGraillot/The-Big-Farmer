@@ -1,9 +1,8 @@
-import argparse
-from typing import NoReturn
+import logging
 
 
-class Fonctions:
-    def __init__(self: "Fonctions", username) -> None:
+class Ferme:
+    def __init__(self: "Ferme", username) -> None:
         self.username = username
         self._commands: list[str] = []
         self.date_vente: list[int] = [-100, -100, -100, -100, -100]
@@ -15,9 +14,10 @@ class Fonctions:
             False,
         ]
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
-        self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
+        self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
+        self.jour_de_catastrophe_climatique: int = 0
 
-    def turn(self: "Fonctions", gamedata):
+    def turn(self: "Ferme", gamedata):
 
         self.game_data = gamedata
         for farm in self.game_data["farms"]:
@@ -27,7 +27,7 @@ class Fonctions:
         else:
             raise ValueError(f"My farm is not found ({self.username})")
         print(self.my_farm)
-
+        logging.info("jour %d", self.game_data["day"])
         if self.game_data["day"] == 0:
             self.add_command("0 EMPRUNTER 40000")
             self.add_command("0 ACHETER_CHAMP")
@@ -38,6 +38,19 @@ class Fonctions:
             self.add_command("0 ACHETER_TRACTEUR")
             self.add_command("0 ACHETER_TRACTEUR")
             self.add_command("0 ACHETER_TRACTEUR")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
+            self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
             self.add_command("0 EMPLOYER")
@@ -70,86 +83,127 @@ class Fonctions:
             self.add_command("10 ARROSER 5")
             self.add_command("17 ARROSER 1")
             self.add_command("18 ARROSER 2")
-            self.add_command("19 ARROSER 1")
+            self.add_command("19 ARROSER 3")
+            self.add_command("20 ARROSER 4")
+            self.add_command("13 ARROSER 5")
+            self.add_command("21 ARROSER 1")
+            self.add_command("22 ARROSER 2")
+            self.add_command("23 ARROSER 3")
+            self.add_command("24 ARROSER 4")
+            self.add_command("25 ARROSER 5")
+            self.add_command("26 ARROSER 1")
+            self.add_command("27 ARROSER 2")
+            self.add_command("28 ARROSER 3")
+            self.add_command("29 ARROSER 4")
+            self.add_command("30 ARROSER 5")
             self.add_command("11 CUISINER")
             self.add_command("12 CUISINER")
-            self.add_command("13 CUISINER")
+            self.add_command("32 CUISINER")
+            self.add_command("33 CUISINER")
+            self.add_command("31 CUISINER")
 
         if self.game_data["day"] < 896:
             self.arroser_localisation(1, 1)
-            self.arroser_localisation(6, 1)
-            self.arroser_localisation(17, 1)
-            self.arroser_localisation(19, 1)
             self.arroser_localisation(2, 2)
-            self.arroser_localisation(7, 2)
-            self.arroser_localisation(18, 2)
             self.arroser_localisation(3, 3)
-            self.arroser_localisation(8, 3)
             self.arroser_localisation(4, 4)
-            self.arroser_localisation(9, 4)
             self.arroser_localisation(5, 5)
+            self.arroser_localisation(6, 1)
+            self.arroser_localisation(7, 2)
+            self.arroser_localisation(8, 3)
+            self.arroser_localisation(9, 4)
             self.arroser_localisation(10, 5)
+            self.arroser_localisation(17, 1)
+            self.arroser_localisation(18, 2)
+            self.arroser_localisation(19, 3)
+            self.arroser_localisation(20, 4)
+            self.arroser_localisation(13, 5)
+            self.arroser_localisation(21, 1)
+            self.arroser_localisation(22, 2)
+            self.arroser_localisation(23, 3)
+            self.arroser_localisation(24, 4)
+            self.arroser_localisation(25, 5)
+            self.arroser_localisation(26, 1)
+            self.arroser_localisation(27, 2)
+            self.arroser_localisation(28, 3)
+            self.arroser_localisation(29, 4)
+            self.arroser_localisation(30, 5)
 
-            self.semer_stock(1, 1, "TOMATE")
-            self.semer_stock(2, 2, "POIREAU")
-            self.semer_stock(3, 3, "PATATE")
-            self.semer_stock(4, 4, "OIGNON")
-            self.semer_stock(5, 5, "COURGETTE")
+            self.detection_climat()
+
+            self.semer_stock(1, 1)
+            self.semer_stock(2, 2)
+            self.semer_stock(3, 3)
+            self.semer_stock(4, 4)
+            self.semer_stock(5, 5)
 
             self.detection_fin_stockage()
             self.stocker(14, 1)
             self.stocker(15, 2)
             self.stocker(16, 3)
+
             self.cuisiner_5legumes(11)
             self.cuisiner_5legumes(12)
-            self.cuisiner_5legumes(13)
-            self.cuisine_tout(20)
+            self.cuisiner_5legumes(32)
+            self.cuisiner_5legumes(33)
+            self.cuisiner_5legumes(31)
 
         if self.game_data["day"] == 896:
             self.licencier_embaucher()
 
         if self.game_data["day"] > 896:
-            self.arroser_localisation(21, 1)
-            self.arroser_localisation(26, 1)
-            self.arroser_localisation(31, 1)
-            self.arroser_localisation(33, 1)
-            self.arroser_localisation(22, 2)
-            self.arroser_localisation(27, 2)
-            self.arroser_localisation(32, 2)
-            self.arroser_localisation(23, 3)
-            self.arroser_localisation(28, 3)
-            self.arroser_localisation(24, 4)
-            self.arroser_localisation(29, 4)
-            self.arroser_localisation(25, 5)
-            self.arroser_localisation(30, 5)
+            self.arroser_localisation(35, 1)
+            self.arroser_localisation(36, 2)
+            self.arroser_localisation(37, 3)
+            self.arroser_localisation(38, 4)
+            self.arroser_localisation(39, 5)
+            self.arroser_localisation(40, 1)
+            self.arroser_localisation(41, 2)
+            self.arroser_localisation(42, 3)
+            self.arroser_localisation(43, 4)
+            self.arroser_localisation(44, 5)
+            self.arroser_localisation(45, 1)
+            self.arroser_localisation(46, 2)
+            self.arroser_localisation(47, 3)
+            self.arroser_localisation(48, 4)
+            self.arroser_localisation(49, 5)
+            self.arroser_localisation(50, 1)
+            self.arroser_localisation(51, 2)
+            self.arroser_localisation(52, 3)
+            self.arroser_localisation(53, 4)
+            self.arroser_localisation(54, 5)
+            self.arroser_localisation(55, 1)
+            self.arroser_localisation(56, 2)
+            self.arroser_localisation(57, 3)
+            self.arroser_localisation(58, 4)
+            self.arroser_localisation(59, 5)
 
-            self.semer_stock(21, 1, "TOMATE")
-            self.semer_stock(22, 2, "POIREAU")
-            self.semer_stock(23, 3, "PATATE")
-            self.semer_stock(24, 4, "OIGNON")
-            self.semer_stock(25, 5, "COURGETTE")
+            self.detection_climat()
+
+            self.semer_stock(35, 1)
+            self.semer_stock(36, 2)
+            self.semer_stock(37, 3)
+            self.semer_stock(38, 4)
+            self.semer_stock(39, 5)
 
             self.detection_fin_stockage()
-            self.stocker(34, 1)
-            self.stocker(35, 2)
-            self.stocker(36, 3)
-            self.cuisiner_5legumes(37)
-            self.cuisiner_5legumes(38)
-            self.cuisiner_5legumes(39)
-            self.cuisine_tout(40)
+            self.stocker(60, 1)
+            self.stocker(61, 2)
+            self.stocker(62, 3)
 
-        for champs in range(5):
-            self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
-                "content"
-            ]
+            self.cuisiner_5legumes(64)
+            self.cuisiner_5legumes(65)
+            self.cuisiner_5legumes(66)
+            self.cuisiner_5legumes(67)
+            self.cuisiner_5legumes(63)
 
-    def arroser_localisation(self: "Fonctions", ouvrier, champs):
+    def arroser_localisation(self: "Ferme", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
             for employe in self.my_farm["employees"]:
                 if employe["id"] == ouvrier and employe["location"] == f"FIELD{champs}":
                     self.add_command(f"{ouvrier} ARROSER {champs}")
 
-    def vendre(self: "Fonctions", champs):
+    def vendre(self: "Ferme", champs):
         champs_en_cours_de_vente = False
         for index in range(5):
             if self.game_data["day"] <= self.date_vente[index] + 2:
@@ -164,19 +218,38 @@ class Fonctions:
             self.add_command(f"0 VENDRE {champs}")
             self.date_vente[champs - 1] = self.game_data["day"]
 
-    def semer_vente(self: "Fonctions", ouvrier, champs, legume):
-        if self.game_data["day"] == self.date_vente[champs - 1] + 2:
-            self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+    def semer_stock(self: "Ferme", ouvrier, champs):
+        self.trie_des_stock_de_legume = self.my_farm["soup_factory"]["stock"]
+        sorted_legume_by_stock = sorted(
+            self.trie_des_stock_de_legume.items(), key=lambda x: x[1]
+        )
+        legume = sorted_legume_by_stock[0][0]
+        print(sorted_legume_by_stock)
+        print(legume)
+        for employe in self.my_farm["employees"]:
+            if (
+                employe["id"] == ouvrier
+                and employe["location"] == f"FIELD{champs}"
+                and self.my_farm["fields"][champs - 1]["content"] == "NONE"
+            ):
 
-    def semer_stock(self: "Fonctions", ouvrier, champs, legume):
+                if legume == ("POTATO"):
+                    legume = "PATATE"
 
-        if (
-            self.my_farm["fields"][champs - 1]["content"] == "NONE"
-            and self.contenance_des_champs[champs - 1] != "NONE"
-        ):
-            self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+                elif legume == ("LEEK"):
+                    legume = "POIREAU"
 
-    def stocker(self: "Fonctions", ouvrier, tracteur):
+                elif legume == ("ONION"):
+                    legume = "OIGNON"
+
+                elif legume == ("TOMATO"):
+                    legume = "TOMATE"
+
+                elif legume == ("ZUCCHINI"):
+                    legume = "COURGETTE"
+                self.add_command(f"{ouvrier} SEMER {legume} {champs}")
+
+    def stocker(self: "Ferme", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
         print(self.champs_en_cours_de_stockage)
         if self.ouvrier_en_cours_de_stockage(ouvrier):
@@ -192,13 +265,13 @@ class Fonctions:
                 self.ouvrier_stockage_par_champ[champ] = ouvrier
                 break
 
-    def ouvrier_en_cours_de_stockage(self: "Fonctions", ouvrier):
+    def ouvrier_en_cours_de_stockage(self: "Ferme", ouvrier):
         for ouvrier_stockage in self.ouvrier_stockage_par_champ:
             if ouvrier_stockage == ouvrier:
                 return True
         return False
 
-    def detection_fin_stockage(self: "Fonctions"):
+    def detection_fin_stockage(self: "Ferme"):
         for numero_champ in range(5):
             id_ouvrier_en_deplacement = self.ouvrier_stockage_par_champ[numero_champ]
             for employe in self.my_farm["employees"]:
@@ -209,13 +282,7 @@ class Fonctions:
                     self.champs_en_cours_de_stockage[numero_champ] = False
                     self.ouvrier_stockage_par_champ[numero_champ] = -1
 
-    def cuisine_tout(self: "Fonctions", ouvrier):
-        for employe in self.my_farm["employees"]:
-            if employe["id"] == ouvrier and employe["location"] != "SOUP_FACTORY":
-                return
-        self.add_command(f"{ouvrier} CUISINER")
-
-    def cuisiner_5legumes(self: "Fonctions", ouvrier):
+    def cuisiner_5legumes(self: "Ferme", ouvrier):
         for employe in self.my_farm["employees"]:
             if employe["id"] == ouvrier and employe["location"] != "SOUP_FACTORY":
                 return
@@ -225,27 +292,41 @@ class Fonctions:
                 return
         self.add_command(f"{ouvrier} CUISINER")
 
-    def licencier_embaucher(self: "Fonctions"):
-        for employe in range(20):
+    def licencier_embaucher(self: "Ferme"):
+        for employe in range(33):
             self.add_command(f"0 LICENCIER {employe+1}")
             self.add_command("0 EMPLOYER")
         for numero_champ in range(5):
             if self.my_farm["fields"][numero_champ]["content"] != "NONE":
-                self.add_command(f"{21+numero_champ} ARROSER {1 + numero_champ}")
+                self.add_command(f"{35+numero_champ} ARROSER {1 + numero_champ}")
             else:
-                self.add_command(f"{21+numero_champ} SEMER PATATE {1 + numero_champ}")
-        self.add_command("26 ARROSER 1")
-        self.add_command("27 ARROSER 2")
-        self.add_command("28 ARROSER 3")
-        self.add_command("29 ARROSER 4")
-        self.add_command("30 ARROSER 5")
-        self.add_command("31 ARROSER 1")
-        self.add_command("32 ARROSER 2")
-        self.add_command("33 ARROSER 1")
-        self.add_command("37 CUISINER")
-        self.add_command("38 CUISINER")
-        self.add_command("39 CUISINER")
-        self.add_command("40 CUISINER")
+                self.add_command(f"{35+numero_champ} SEMER PATATE {1 + numero_champ}")
+        self.add_command("0 EMPLOYER")
+        self.add_command("40 ARROSER 1")
+        self.add_command("41 ARROSER 2")
+        self.add_command("42 ARROSER 3")
+        self.add_command("43 ARROSER 4")
+        self.add_command("44 ARROSER 5")
+        self.add_command("45 ARROSER 1")
+        self.add_command("46 ARROSER 2")
+        self.add_command("47 ARROSER 3")
+        self.add_command("48 ARROSER 4")
+        self.add_command("49 ARROSER 5")
+        self.add_command("50 ARROSER 1")
+        self.add_command("51 ARROSER 2")
+        self.add_command("52 ARROSER 3")
+        self.add_command("53 ARROSER 4")
+        self.add_command("54 ARROSER 5")
+        self.add_command("55 ARROSER 1")
+        self.add_command("56 ARROSER 2")
+        self.add_command("57 ARROSER 3")
+        self.add_command("58 ARROSER 4")
+        self.add_command("59 ARROSER 5")
+        self.add_command("64 CUISINER")
+        self.add_command("65 CUISINER")
+        self.add_command("66 CUISINER")
+        self.add_command("67 CUISINER")
+        self.add_command("63 CUISINER")
         self.champs_en_cours_de_stockage = [
             False,
             False,
@@ -255,5 +336,19 @@ class Fonctions:
         ]
         self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
-    def add_command(self: "Fonctions", command: str) -> None:
+    def detection_climat(self: "Ferme"):
+        for event in self.game_data["events"]:
+            if "fire" in event:
+                if event[-1:] != "y":
+                    numero_de_champ = int(event[-1:])
+                    self.champs_en_cours_de_stockage[numero_de_champ] = False
+                    self.ouvrier_stockage_par_champ[numero_de_champ] = -1
+
+            elif "frost" in event or "heat wave" in event:
+                numero_de_champ = int(event[-1:])
+                self.champs_en_cours_de_stockage[numero_de_champ] = False
+                self.ouvrier_stockage_par_champ[numero_de_champ] = -1
+
+    def add_command(self: "Ferme", command: str) -> None:
+        logging.info(command)
         self._commands.append(command)

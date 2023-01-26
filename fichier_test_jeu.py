@@ -1,5 +1,6 @@
+import logging
 import argparse
-from class_Fonctions import Fonctions
+from class_Fonctions import Ferme
 from typing import NoReturn
 
 from chronobio.network.client import Client
@@ -7,8 +8,8 @@ from chronobio.network.client import Client
 
 class PlayerGameClient(Client):
     def __init__(self: "PlayerGameClient", server_addr: str, port: int) -> None:
-        super().__init__(server_addr, port, "THE_BIG_FARMER", spectator=False)
-        self.fonction = Fonctions("THE_BIG_FARMER")
+        super().__init__(server_addr, port, "THE BIG FARMER", spectator=False)
+        self.fonction = Ferme("THE BIG FARMER")
 
     def run(self: "PlayerGameClient") -> NoReturn:
         while True:
@@ -40,5 +41,11 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-
+    logging.basicConfig(
+        filename="THE BIG FARMER.log",
+        encoding="utf-8",
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)-8s] %(filename)20s(%(lineno)3s):%(funcName)-20s :: %(message)s",
+        datefmt="%m/%d/%Y %H:%M:%S",
+    )
     client = PlayerGameClient(args.address, args.port).run()
