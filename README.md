@@ -66,13 +66,13 @@ Dans un premier terminal de commande entrer la ligne suivante
 ```
 python3 -m chronobio.game.server -p $port
 ```
-Remplacer $port par un numéro de serveur > 1024
+Remplacer $port par un numéro de serveur >= 2000
 ### : Démarrage du fichier jeu :
 Dans un deuxième terminal entrer la ligne suivante
 ```
 python3 name_game_file.py -p $port -u THE_BIG_FARMER
 ```
-Remplacer $port par le même numéro de serveur que précédement en respectant la condition > 1024
+Remplacer $port par le même numéro de serveur que précédement en respectant la condition >= 2000
 
 ### : Partie graphique :
 ### 1A - Création de l'espace virtuel WINDOWS
