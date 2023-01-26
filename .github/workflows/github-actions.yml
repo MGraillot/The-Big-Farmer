@@ -68,3 +68,28 @@ jobs:
       - name: Verify code
         run: |
           black test_farmer.py --check
+
+      - name: "Pytest Coverage Example"
+      - description: "Use Pytest to show test coverage."
+      - inputs:
+          codedirectory:
+            description: "The directory containing the source code."
+            default: "The project root i.e '.'"
+          testdirectory:
+            description: "The directory containing the tests."
+                default: "tests\\"
+          pycovconfigfile:
+            description: "The pycov configuration file"
+                default: ".coveragerc"
+          pytestconfigfile:
+            description: "The pytest configuration file."
+                default: "setup.cfg"
+      - outputs:
+          testcoverage:
+            description: "The Test coverage."
+      - runs:
+          using: "docker"
+          image: "Dockerfile"
+      - branding:
+          icon: 'award'
+          color: 'green'
