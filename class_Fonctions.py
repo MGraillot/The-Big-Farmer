@@ -1,3 +1,6 @@
+import logging
+
+
 class Ferme:
     def __init__(self: "Ferme", username) -> None:
         self.username = username
@@ -24,7 +27,7 @@ class Ferme:
         else:
             raise ValueError(f"My farm is not found ({self.username})")
         print(self.my_farm)
-
+        logging.info("jour %d", self.game_data["day"])
         if self.game_data["day"] == 0:
             self.add_command("0 EMPRUNTER 40000")
             self.add_command("0 ACHETER_CHAMP")
@@ -347,4 +350,5 @@ class Ferme:
                 self.ouvrier_stockage_par_champ[numero_de_champ] = -1
 
     def add_command(self: "Ferme", command: str) -> None:
+        logging.info(command)
         self._commands.append(command)
