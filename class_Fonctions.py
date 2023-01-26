@@ -210,6 +210,7 @@ class Ferme:
             self.cuisiner_5legumes(66)
             self.cuisiner_5legumes(67)
             self.cuisiner_5legumes(63)
+        logging.debug(self.my_farm["soup_factory"]["stock"])
 
     def arroser_localisation(self: "Ferme", ouvrier, champs):
         """ Find out which field should be watered and send a worker to water it
