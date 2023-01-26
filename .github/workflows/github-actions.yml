@@ -1,6 +1,6 @@
 name: Automation test
 
-on: [push, pull_request]
+on: [push, pull_requests]
 
 jobs:
   flake8:
