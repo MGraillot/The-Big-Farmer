@@ -37,6 +37,7 @@ class Ferme:
             raise ValueError(f"My farm is not found ({self.username})")
         print(self.my_farm)
         logging.info("jour %d", self.game_data["day"])
+        logging.debug("Block %d", self.my_farm["blocked"])
         if self.game_data["day"] == 0:
             self.add_command("0 EMPRUNTER 40000")
             self.add_command("0 ACHETER_CHAMP")
