@@ -346,7 +346,7 @@ class Ferme:
         for event in self.game_data["events"]:
             logging.info(event)
             if "fire" in event:
-                if event[-1:] != "y":
+                if event[-1:] != "Y":
                     numero_de_champ = int(event[-1:])
                     self.champs_en_cours_de_stockage[numero_de_champ - 1] = False
                     self.ouvrier_stockage_par_champ[numero_de_champ - 1] = -1
