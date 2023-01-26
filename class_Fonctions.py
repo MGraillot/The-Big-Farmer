@@ -465,6 +465,8 @@ class Ferme:
 
     def detection_fin_stockage_climat(self: "Ferme"):
         for champs_index, ouvrier_id in enumerate(self.id_ouvrier_stockage_climat):
+            if ouvrier_id == -1:
+                continue
             ouvrier = self.get_employee_by_id(ouvrier_id)
             if ouvrier["location"] == "SOUP_FACTORY" or ouvrier["location"] == f"FIELD{champs_index + 1}":
                 self.ouvrier_stockage_par_champ[champs_index] = -1
