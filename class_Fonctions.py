@@ -128,7 +128,6 @@ class Ferme:
             self.arroser_localisation(30, 5)
 
             self.detection_climat()
-            self.action_climat()
 
             self.semer_stock(1, 1)
             self.semer_stock(2, 2)
@@ -178,7 +177,6 @@ class Ferme:
             self.arroser_localisation(59, 5)
 
             self.detection_climat()
-            self.action_climat()
 
             self.semer_stock(35, 1)
             self.semer_stock(36, 2)
@@ -258,9 +256,7 @@ class Ferme:
     def stocker(self: "Ferme", ouvrier, tracteur):
         print(self.ouvrier_stockage_par_champ)
         print(self.champs_en_cours_de_stockage)
-        if self.jour_de_catastrophe_climatique != 0:
-            return
-        elif self.ouvrier_en_cours_de_stockage(ouvrier):
+        if self.ouvrier_en_cours_de_stockage(ouvrier):
             return
         for champ in reversed(range(5)):
             if (
