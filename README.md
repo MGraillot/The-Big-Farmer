@@ -60,6 +60,14 @@ test_farmer.py          19      0   100%
 ----------------------------------------
 TOTAL                  309    263    15%
 ```
+### Utilisation dans notre projet
+Nous avions pris la décision d'effectuer tous nos tests de mesure de couverture de code, par l'intermédiaire des actions disponibles sur github.
+
+Pour cela, nous avons ajouter quelques lignes (LOL!!) dans notre fichier : `.github-actions.yml`
+- Affichage de la couverture de code pour tout les fichiers test
+- Pourcentage de couverture de test
+- Refus de pull request / push si baisse de couverture ou qualité
+
 # = AIDE LANCEMENT DU JEU =
 ### : Connexion au serveur :
 Dans un premier terminal de commande entrer la ligne suivante
