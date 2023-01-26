@@ -91,7 +91,7 @@ jobs:
       uses: programmingwithalex/pytester-cov@main
       with:
         pytest-root-dir: '.'
-        cov-omit-list: 'test/*'
+        cov-omit-list: 'chronobio'
         cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
         cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
 
@@ -131,6 +131,23 @@ jobs:
       uses: peter-evans/commit-comment@main
       with:
         body: ${{ steps.pytester-cov.outputs.output-table }}
+    outputs:
+      output-table: # id of output
+      description: 'pytest-cover markdown output table'
+      cov-threshold-single-fail:
+        description: 'boolean if any single file coverage less than cov-threshold-single'
+      cov-threshold-total-fail:
+        description: 'boolean if total coverage less than cov-threshold-total'
+    runs:
+      using: 'docker'
+      image: 'Dockerfile'
+      args:
+        - ${{ inputs.pytest-root-dir }}
+        - ${{ inputs.pytest-tests-dir }}
+        - ${{ inputs.cov-omit-list }}
+        - ${{ inputs.requirements-file }}
+        - ${{ inputs.cov-threshold-single }}
+        - ${{ inputs.cov-threshold-total }}
 
   mypy:
     runs-on: ubuntu-latest
