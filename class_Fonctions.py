@@ -11,7 +11,6 @@ class Ferme:
             False,
         ]
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
-        self.contenance_des_champs: list[str] = ["NONE", "NONE", "NONE", "NONE", "NONE"]
         self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
         self.jour_de_catastrophe_climatique: int = 0
 
@@ -195,12 +194,6 @@ class Ferme:
             self.cuisiner_5legumes(67)
             self.cuisiner_5legumes(63)
 
-        for champs in range(5):
-            self.contenance_des_champs[champs] = self.my_farm["fields"][champs][
-                "content"
-            ]
-        print(self.contenance_des_champs)
-
     def arroser_localisation(self: "Ferme", ouvrier, champs):
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
             for employe in self.my_farm["employees"]:
@@ -352,18 +345,6 @@ class Ferme:
                 numero_de_champ = int(event[-1:])
                 self.champs_en_cours_de_stockage[numero_de_champ] = False
                 self.ouvrier_stockage_par_champ[numero_de_champ] = -1
-
-    def action_climat(self: "Ferme"):
-        if self.jour_de_catastrophe_climatique > 100:
-            self.vendre(1)
-            self.vendre(2)
-            self.vendre(3)
-            self.vendre(4)
-            self.vendre(5)
-        if self.jour_de_catastrophe_climatique > 0:
-            self.jour_de_catastrophe_climatique = (
-                self.jour_de_catastrophe_climatique - 1
-            )
 
     def add_command(self: "Ferme", command: str) -> None:
         self._commands.append(command)
