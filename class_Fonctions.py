@@ -16,6 +16,7 @@ class Ferme:
         self.ouvrier_stockage_par_champ: list[int] = [-1, -1, -1, -1, -1]
         self.trie_des_stock_de_legume: list[int] = [0, 0, 0, 0, 0]
         self.jour_de_catastrophe_climatique: int = 0
+        self.id_ouvrier_stockage_climat: list[int] = [-1, -1, -1, -1, -1]
 
     def turn(self: "Ferme", gamedata):
         """ Find out which field should be watered and send a worker to water it
@@ -149,6 +150,7 @@ class Ferme:
             self.semer_stock(5, 5)
 
             self.detection_fin_stockage()
+            self.detection_fin_stockage_climat()
             self.stocker(14, 1)
             self.stocker(15, 2)
             self.stocker(16, 3)
@@ -202,6 +204,7 @@ class Ferme:
             self.semer_stock(39, 5)
 
             self.detection_fin_stockage()
+            self.detection_fin_stockage_climat()
             self.stocker(60, 1)
             self.stocker(61, 2)
             self.stocker(62, 3)
@@ -443,15 +446,30 @@ class Ferme:
                 if event[-1:] != "Y":
                     numero_de_champ = int(event[-1:])
                     self.champs_en_cours_de_stockage[numero_de_champ - 1] = False
-                    self.ouvrier_stockage_par_champ[numero_de_champ - 1] = -1
+                    self.id_ouvrier_stockage_climat[numero_de_champ -
+                                                    1] = self.ouvrier_stockage_par_champ[numero_de_champ - 1]
                     logging.info("fire")
 
             elif "frost" in event or "heat wave" in event:
                 logging.info(self.game_data["events"])
                 numero_de_champ = int(event[-1:])
                 self.champs_en_cours_de_stockage[numero_de_champ - 1] = False
-                self.ouvrier_stockage_par_champ[numero_de_champ - 1] = -1
+                self.id_ouvrier_stockage_climat[numero_de_champ -
+                                                1] = self.ouvrier_stockage_par_champ[numero_de_champ - 1]
                 logging.info("frost or heat wave")
+
+    def get_employee_by_id(self: "Ferme", id):
+        for employe in self.my_farm["employees"]:
+            if employe["id"] == id:
+                return employe
+
+    def detection_fin_stockage_climat(self: "Ferme"):
+        for champs_index, ouvrier_id in enumerate(self.id_ouvrier_stockage_climat):
+            if ouvrier_id == -1:
+                continue
+            ouvrier = self.get_employee_by_id(ouvrier_id)
+            if ouvrier["location"] == "SOUP_FACTORY" or ouvrier["location"] == f"FIELD{champs_index + 1}":
+                self.ouvrier_stockage_par_champ[champs_index] = -1
 
     def add_command(self: "Ferme", command: str) -> None:
         logging.info(command)
