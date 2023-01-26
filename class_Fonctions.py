@@ -222,10 +222,6 @@ class Ferme:
             self.add_command(f"0 VENDRE {champs}")
             self.date_vente[champs - 1] = self.game_data["day"]
 
-    def semer_vente(self: "Ferme", ouvrier, champs, legume):
-        if self.game_data["day"] == self.date_vente[champs - 1] + 2:
-            self.add_command(f"{ouvrier} SEMER {legume} {champs}")
-
     def semer_stock(self: "Ferme", ouvrier, champs):
         self.trie_des_stock_de_legume = self.my_farm["soup_factory"]["stock"]
         sorted_legume_by_stock = sorted(
