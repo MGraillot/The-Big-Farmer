@@ -357,7 +357,7 @@ class Ferme:
                 )
 
     def action_climat(self: "Ferme"):
-        if self.jour_de_catastrophe_climatique != 0:
+        if self.jour_de_catastrophe_climatique > 100:
             self.vendre(1)
             self.vendre(2)
             self.vendre(3)
@@ -366,6 +366,8 @@ class Ferme:
             self.jour_de_catastrophe_climatique = (
                 self.jour_de_catastrophe_climatique - 1
             )
+        elif self.jour_de_catastrophe_climatique < 100:
+            return
 
     def add_command(self: "Ferme", command: str) -> None:
         self._commands.append(command)
