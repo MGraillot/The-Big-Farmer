@@ -1,7 +1,13 @@
 name: Automation test
 
-on: [push]
+on: 
+    push:
+        branches:
+            - master
 
+    pull_request:
+        branches:
+            - master
 jobs:
   flake8:
 
@@ -81,7 +87,6 @@ jobs:
         with:
             coverageFile: path/to/coverage.xml
             token: ${{ secrets.GITHUB_TOKEN}}
-            
 
   mypy:
     runs-on: ubuntu-latest
