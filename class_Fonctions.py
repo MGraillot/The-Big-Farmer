@@ -342,15 +342,16 @@ class Ferme:
 
     def detection_climat(self: "Ferme"):
         for event in self.game_data["events"]:
-            if "flood" in event:
-                self.jour_de_catastrophe_climatique = (
-                    self.jour_de_catastrophe_climatique + 20
-                )
+            if "fire" in event:
+                if event[-1:] != "y":
+                    numero_de_champ = int(event[-1:])
+                    self.champs_en_cours_de_stockage[numero_de_champ] = False
+                    self.ouvrier_stockage_par_champ[numero_de_champ] = -1
 
-            elif "fire" in event:
-                self.jour_de_catastrophe_climatique = (
-                    self.jour_de_catastrophe_climatique + 40
-                )
+            elif "frost" in event or "heat wave" in event:
+                numero_de_champ = int(event[-1:])
+                self.champs_en_cours_de_stockage[numero_de_champ] = False
+                self.ouvrier_stockage_par_champ[numero_de_champ] = -1
 
     def action_climat(self: "Ferme"):
         if self.jour_de_catastrophe_climatique > 100:
