@@ -211,6 +211,7 @@ class Ferme:
             self.cuisiner_5legumes(66)
             self.cuisiner_5legumes(67)
             self.cuisiner_5legumes(63)
+            self.cuisiner_5legumes(68)
         logging.debug(self.my_farm["soup_factory"]["stock"])
 
     def arroser_localisation(self: "Ferme", ouvrier, champs):
@@ -391,6 +392,7 @@ class Ferme:
             else:
                 self.add_command(f"{35+numero_champ} SEMER PATATE {1 + numero_champ}")
         self.add_command("0 EMPLOYER")
+        self.add_command("0 EMPLOYER")
         self.add_command("40 ARROSER 1")
         self.add_command("41 ARROSER 2")
         self.add_command("42 ARROSER 3")
@@ -415,6 +417,7 @@ class Ferme:
         self.add_command("65 CUISINER")
         self.add_command("66 CUISINER")
         self.add_command("67 CUISINER")
+        self.add_command("68 CUISINER")
         self.add_command("63 CUISINER")
         self.champs_en_cours_de_stockage = [
             False,
