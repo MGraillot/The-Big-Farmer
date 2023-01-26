@@ -14,3 +14,5 @@ exclude = '''
   | dist
 )/
 '''
+[tool.mypy]
+exclude = ['chronobio']
