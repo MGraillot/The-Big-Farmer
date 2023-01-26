@@ -110,28 +110,11 @@ Les vérifications seront les suivantes :
 - Format du code grâce au check de blake
 - Les annotations types et leurs vérifications
 ## Visuel "PASSED"
-```
-check yaml...............................................................Passed
-trim trailing whitespace.................................................Passed
-black................................................(no files to check)Skipped
-flake8...............................................(no files to check)Skipped
-mypy.................................................(no files to check)Skipped
-[branch_farmer b7478f0] Modified files
- 1 file changed, 5 insertions(+)
-```
+
+![screenshot](passed.png)
+
 ## Visuel "FAILED
-```
-check yaml...............................................................Passed
-trim trailing whitespace.................................................Failed
-- hook id: trailing-whitespace
-- exit code: 1
-- files were modified by this hook
 
-Fixing .github/workflows/github-actions.yml
-
-black................................................(no files to check)Skipped
-flake8...............................................(no files to check)Skipped
-mypy.................................................(no files to check)Skipped
-```
+![screenshot](failed.png)
 
 Il y a de nombreux avantage à cela, il nous permet de voir no erreurs et ainsi d'effectuer la modification demandée avant le prochain commit sur la branche.
