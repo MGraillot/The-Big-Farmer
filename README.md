@@ -66,13 +66,13 @@ Dans un premier terminal de commande entrer la ligne suivante
 ```
 python3 -m chronobio.game.server -p $port
 ```
-Remplacer $port par un numéro de serveur > 1024
+Remplacer $port par un numéro de serveur >= 2000
 ### : Démarrage du fichier jeu :
 Dans un deuxième terminal entrer la ligne suivante
 ```
 python3 name_game_file.py -p $port -u THE_BIG_FARMER
 ```
-Remplacer $port par le même numéro de serveur que précédement en respectant la condition > 1024
+Remplacer $port par le même numéro de serveur que précédement en respectant la condition >= 2000
 
 ### : Partie graphique :
 ### 1A - Création de l'espace virtuel WINDOWS
@@ -109,13 +109,12 @@ Les vérifications seront les suivantes :
 - PEP8
 - Format du code grâce au check de blake
 - Les annotations types et leurs vérifications
-## Visuels
-```
-check yaml...............................................................Passed
-trim trailing whitespace.................................................Passed
-black................................................(no files to check)Skipped
-flake8...............................................(no files to check)Skipped
-mypy.................................................(no files to check)Skipped
-[branch_farmer b7478f0] Modified files
- 1 file changed, 5 insertions(+)
-```
+## Visuel "PASSED"
+
+![screenshot](passed.png)
+
+## Visuel "FAILED
+
+![screenshot](failed.png)
+
+Il y a de nombreux avantage à cela, il nous permet de voir no erreurs et ainsi d'effectuer la modification demandée avant le prochain commit sur la branche.
