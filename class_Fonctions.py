@@ -342,7 +342,9 @@ class Ferme:
         self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
     def detection_climat(self: "Ferme"):
+        logging.info(self.game_data["events"])
         for event in self.game_data["events"]:
+            logging.info(event)
             if "fire" in event:
                 if event[-1:] != "y":
                     numero_de_champ = int(event[-1:])
@@ -351,6 +353,7 @@ class Ferme:
                     logging.info("fire")
 
             elif "frost" in event or "heat wave" in event:
+                logging.info(self.game_data["events"])
                 numero_de_champ = int(event[-1:])
                 self.champs_en_cours_de_stockage[numero_de_champ] = False
                 self.ouvrier_stockage_par_champ[numero_de_champ] = -1
