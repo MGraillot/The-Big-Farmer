@@ -44,7 +44,7 @@ Pour cela il est nécessaire d'isntaller `-xdist`
 ```
 pip install pytest -xdist
 ```
-#### c. Tests avec pytest-cov :
+#### d. Tests avec pytest-cov :
 Se rendre dans le répertoire sur lequel effectuer les tests avec le terminal et éxecuter la ligne suivante
 ```
 pytest --cov
@@ -52,14 +52,13 @@ pytest --cov
 Produirait un rapport comme :
 
 ```
--------------------- couverture: ... ---------------------
-Nom Stmts Miss Cover
+---------- coverage: platform win32, python 3.10.9-final-0 -----------
+Name                 Stmts   Miss  Cover
 ----------------------------------------
-monproj/__init__ 2 0 100%
-monproj/monproj 257 13 94%
-monproj/fonctionnalité4286 94 7 92%
+class_Fonctions.py     290    263     9%
+test_farmer.py          19      0   100%
 ----------------------------------------
-TOTAL 353 20 94%
+TOTAL                  309    263    15%
 ```
 # = AIDE LANCEMENT DU JEU =
 ### : Connexion au serveur :
@@ -103,9 +102,20 @@ Remplacer $port par le même numéro de serveur que précédement en respectant 
 /!\ Il faut garder les terminaux ouverts /!\
 
 # = PRE-COMMIT =
-Des pre-commit sont disponibles au sein de projet.
+Des pre-commit sont disponibles au sein de projet, dans le but de vérifier certains éléments avant la mise à jour sur le projet au global.
 ## Comment cela fonctionne ?
 Et bien c'est tout simple, ceux sont des vérifications qui sont faites sur les fichiers du projet ou un fichier en particulier (ex : le fichier de jeu), afin d'identifier des erreurs avant d'effectuer une mise à jour sur le dépôt github de la Team.
 Les vérifications seront les suivantes :
 - PEP8
 - Format du code grâce au check de blake
+- Les annotations types et leurs vérifications
+## Visuels
+```
+check yaml...............................................................Passed
+trim trailing whitespace.................................................Passed
+black................................................(no files to check)Skipped
+flake8...............................................(no files to check)Skipped
+mypy.................................................(no files to check)Skipped
+[branch_farmer b7478f0] Modified files
+ 1 file changed, 5 insertions(+)
+```
