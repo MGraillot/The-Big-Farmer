@@ -18,6 +18,15 @@ class Ferme:
         self.jour_de_catastrophe_climatique: int = 0
 
     def turn(self: "Ferme", gamedata):
+        """ Find out which field should be watered and send a worker to water it
+
+        args : self: "ferme": call the class "Ferme",
+
+               gamedata : Data from the game (.json file)
+
+        return : Function that allows to send game actions    
+
+        """
         logging.info("turn")
         self.game_data = gamedata
         for farm in self.game_data["farms"]:
@@ -203,12 +212,32 @@ class Ferme:
             self.cuisiner_5legumes(63)
 
     def arroser_localisation(self: "Ferme", ouvrier, champs):
+        """ Find out which field should be watered and send a worker to water it
+
+        args : self: "ferme": call the class "Ferme",
+
+               ouvrier is the ID of the worker, 
+
+               champs is the ID of the fied
+
+        return : A command for send the worker on the field for water it     
+
+        """
         if self.my_farm["fields"][champs - 1]["needed_water"] != 0:
             for employe in self.my_farm["employees"]:
                 if employe["id"] == ouvrier and employe["location"] == f"FIELD{champs}":
                     self.add_command(f"{ouvrier} ARROSER {champs}")
 
     def vendre(self: "Ferme", champs):
+        """ Selling the vegetable from the field 
+
+        args : self: "ferme": call the class "Ferme",
+
+               champs is the ID of the fied
+
+        return : A command for send the maanger on the field for selling the vegetable     
+
+        """
         champs_en_cours_de_vente = False
         for index in range(5):
             if self.game_data["day"] <= self.date_vente[index] + 2:
@@ -224,6 +253,17 @@ class Ferme:
             self.date_vente[champs - 1] = self.game_data["day"]
 
     def semer_stock(self: "Ferme", ouvrier, champs):
+        """ Find out which field is ready to be sown and send a worker to sow 
+
+        args : self: "ferme": call the class "Ferme",
+
+               ouvrier is the ID of the worker, 
+
+               champs is the ID of the fied
+
+        return : A command for send the worker on the field for sown
+
+        """
         self.trie_des_stock_de_legume = self.my_farm["soup_factory"]["stock"]
         sorted_legume_by_stock = sorted(
             self.trie_des_stock_de_legume.items(), key=lambda x: x[1]
@@ -255,6 +295,17 @@ class Ferme:
                 self.add_command(f"{ouvrier} SEMER {legume} {champs}")
 
     def stocker(self: "Ferme", ouvrier, tracteur):
+        """ Find out which field is ready to be harvested and send a worker on a tractor
+
+        args : self: "ferme": call the class "Ferme",
+
+               ouvrier is the ID of the worker, 
+
+               tracteur is the ID of the tractor
+
+        return : A command for send the worker on the field for harvesting
+
+        """
         print(self.ouvrier_stockage_par_champ)
         print(self.champs_en_cours_de_stockage)
         if self.ouvrier_en_cours_de_stockage(ouvrier):
@@ -271,12 +322,28 @@ class Ferme:
                 break
 
     def ouvrier_en_cours_de_stockage(self: "Ferme", ouvrier):
+        """ Find out if a worker is harvesting and storing vegetables from the field 
+
+        args : self: "ferme": call the class "Ferme",
+
+               ouvrier is the ID of the worker, 
+
+        return : True if the worker is busy
+
+        """
         for ouvrier_stockage in self.ouvrier_stockage_par_champ:
             if ouvrier_stockage == ouvrier:
                 return True
         return False
 
     def detection_fin_stockage(self: "Ferme"):
+        """ Find out if a worker has finished storing the vegetables in the field 
+
+        args : self: "ferme": call the class "Ferme",
+
+        return : False if the worker as done
+
+        """
         for numero_champ in range(5):
             id_ouvrier_en_deplacement = self.ouvrier_stockage_par_champ[numero_champ]
             for employe in self.my_farm["employees"]:
@@ -288,6 +355,14 @@ class Ferme:
                     self.ouvrier_stockage_par_champ[numero_champ] = -1
 
     def cuisiner_5legumes(self: "Ferme", ouvrier):
+        """ Requires a cook to cook soups of 5 vegetables
+
+        args : self: "ferme": call the class "Ferme",
+
+               ouvrier is the ID of the worker, 
+
+        return : A command for the cook to cook 
+        """
         for employe in self.my_farm["employees"]:
             if employe["id"] == ouvrier and employe["location"] != "SOUP_FACTORY":
                 return
@@ -298,6 +373,13 @@ class Ferme:
         self.add_command(f"{ouvrier} CUISINER")
 
     def licencier_embaucher(self: "Ferme"):
+        """ Function to dismiss all workers and rehire new ones
+
+        args : self: "ferme": call the class "Ferme",
+
+        return : New workers
+
+        """
         for employe in range(33):
             self.add_command(f"0 LICENCIER {employe+1}")
             self.add_command("0 EMPLOYER")
@@ -342,6 +424,13 @@ class Ferme:
         self.ouvrier_stockage_par_champ = [-1, -1, -1, -1, -1]
 
     def detection_climat(self: "Ferme"):
+        """ Function to detect climatic hazards
+
+        args : self: "ferme": call the class "Ferme",
+
+        return : Action according to these climatic hazards
+
+        """
         logging.info(self.game_data["events"])
         for event in self.game_data["events"]:
             logging.info(event)
